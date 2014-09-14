@@ -96,11 +96,13 @@ Lists of simple types like numbers and strings may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
 in neighboring rows. For delimited lists a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter used. For vertical
-lists a `[]` suffix is used. e.g:
+lists a `[]` suffix is used. e.g. Delimited:
 
 name | rooms[,] | colors[,]
 --- | --- | ---
 Tim | 19a,14b,18a | green,blue
+
+Vertical:
 
 name | rooms[] | colors[]
 --- | --- | ---
@@ -108,7 +110,7 @@ Tim | 19a | green
  | 14b | blue
  | 18a |
 
-Both of the tables above convert to:
+Both convert to:
 
 ```json
 [
@@ -123,7 +125,7 @@ Both of the tables above convert to:
 ### Nested objects
 
 JSON objects nested directly inside other objects are represented
-by extra columns with the parent name and child joined with a
+by extra columns with the parent name and child name joined with a
 period (`.`).  e.g.:
 
 id | name.en | name.fr
@@ -143,4 +145,33 @@ becomes:
   }
 ]
 ```
+
+### Lists of objects
+
+Lists of JSON objects within other objects are represented
+by extra columns with the parent name and child name joined with a
+forward slash (`/`). e.g.:
+
+address | residents/name | residents/age | cars/make | cars/colour
+--- | --- | --- | --- | ---
+12 oak ave. | sam | 43 | honda | gray
+ | linda | 45 | |
+
+Which would convert to:
+
+```json
+[
+  {
+    "address": "12 oak ave.",
+    "residents": [
+      {"name": "sam", "age": "43"},
+      {"name": "linda", "age": "45"}
+    ],
+    "cars": [
+      {"make": "honda", "color": "gray"}
+    ]
+  }
+]
+```
+
 
