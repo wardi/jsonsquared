@@ -157,15 +157,15 @@ address | residents/name | residents/age | cars/make | cars/colour
 12 oak ave. | sam | 43 | honda | gray
  | linda | 45 | |
 
-Which would convert to:
+becomes:
 
 ```json
 [
   {
     "address": "12 oak ave.",
     "residents": [
-      {"name": "sam", "age": "43"},
-      {"name": "linda", "age": "45"}
+      {"name": "sam", "age": 43},
+      {"name": "linda", "age": 45}
     ],
     "cars": [
       {"make": "honda", "color": "gray"}
