@@ -1,6 +1,7 @@
 # JSON Squared
 
-JSON Squared is a library for lossless conversion between JSON or
+JSON Squared is a library for lossless conversion between
+[JSON](http://json.org) or
 [JSON Lines](http://jsonlines.org) and CSV or Excel format in a sparse
 style convenient for editing.
 
@@ -17,11 +18,15 @@ Features:
   disk space temporarily for conversions
 * Simple, clear error reporting for parsing errors
 
-Current limitations:
+Limitations:
 
 * Topmost JSON element must be a list containing only JSON objects
   (for JSON Lines each topmost element must be a JSON object)
-* Lists directly containing other lists are not supported
+* Lists directly containing other lists are not currently supported,
+  e.g.: `[[1,2],[3,4]]`
+* JSON objects must have at least one simple value, e.g.
+  a string or number.
+
 
 ## Design choices
 
@@ -71,7 +76,6 @@ This format is typically used only for:
 * strings with unprintable control codes, e.g.: `"\u0003\u0000"`
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
-to represent: empty strings
 
 Strings containing newlines are not escaped by default, but escaping
 may be forced on the command line.
@@ -84,4 +88,23 @@ CSV value | JSON value
 `what's that?` | `"what's that?"`
 `True` | `"True"`
 `0x8000` | `"0x8000"`
+
+### Lists of simple types
+
+Lists of simple types like numbers and strings may be represented
+collapsed into a single cell by choosing a delimiter, or vertically
+in neighboring rows. For delimited lists a `[x]` suffix is added to
+the column heading, where `x` is the delimiter used. For vertical
+lists a `[]` suffix is used. e.g. the following are equivalent:
+
+name | rooms[,] | colors[,]
+--- | --- | ---
+Tim | 19a,14b,18a | green,blue
+
+name | rooms[] | colors[]
+--- | --- | ---
+Tim | 19a | green
+ | 14b | blue
+ | 18a | 
+
 
