@@ -88,14 +88,15 @@ CSV value | JSON value
 `what's that?` | `"what's that?"`
 `True` | `"True"`
 `0x8000` | `"0x8000"`
+`I said "sure."` | `"I said \"sure.\"`
 
 ### Lists of simple types
 
 Lists of simple types like numbers and strings may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
-in neighboring rows. For delimited lists a `[x]` suffix is added to
-the column heading, where `x` is the delimiter used. For vertical
-lists a `[]` suffix is used. e.g. the following are equivalent:
+in neighboring rows. For delimited lists a `[𝑥]` suffix is added to
+the column heading, where `𝑥` is the delimiter used. For vertical
+lists a `[]` suffix is used. e.g:
 
 name | rooms[,] | colors[,]
 --- | --- | ---
@@ -105,6 +106,40 @@ name | rooms[] | colors[]
 --- | --- | ---
 Tim | 19a | green
  | 14b | blue
- | 18a | 
+ | 18a |
 
+Both of the tables above convert to:
+
+```json
+[
+  {
+    "name": "Tim",
+    "rooms": ["19a", "14b", "18a"],
+    "colors": ["green", "blue"]
+  }
+]
+```
+
+### Nested objects
+
+JSON objects nested directly inside other objects are represented
+by extra columns with the parent name and child joined with a `.`.
+e.g.:
+
+id | name.en | name.fr
+190007 | Franklin | Benjamin
+
+becomes:
+
+```json
+[
+  {
+    "id": 190007,
+    "name": {
+      "en": "Franklin",
+      "fr": "Benjamin"
+    }
+  }
+]
+```
 
