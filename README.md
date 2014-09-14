@@ -123,10 +123,11 @@ Both of the tables above convert to:
 ### Nested objects
 
 JSON objects nested directly inside other objects are represented
-by extra columns with the parent name and child joined with a `.`.
-e.g.:
+by extra columns with the parent name and child joined with a
+period (`.`).  e.g.:
 
 id | name.en | name.fr
+--- | --- | ---
 190007 | Franklin | Benjamin
 
 becomes:
