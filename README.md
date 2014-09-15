@@ -26,6 +26,56 @@ Limitations:
 
 * Topmost JSON element must be a list (existing restriction for JSON Lines)
 
+## Example
+
+address | owners[,] | pets/name | pets/dob | pets/toys[,]
+--- | --- | --- | --- | ---
+12 Oak ave. | Tim | Fluffy | 2009 | pink elephant,green ball
+ | | Beast | 2011 |
+ | | Tiny | 2005 | orange platypus
+199 Cliff ave. | June | Sophie | 2009 | knotted rope
+ | James | | | octopus-like thing
+ | | | | piranha squeak toy
+ | | Theo | 2009 |
+
+Converts to:
+
+```json
+[
+  {
+    "address": "12 Oak ave.",
+    "owners": ["Tim"],
+    "pets": [
+      {
+	"name": "Fluffy", "dob": 2009,
+	"toys": ["pink elephant", "green ball"]
+      },
+      {
+	"name": "Beast", "dob": 2011
+      },
+      {
+	"name": "Tiny", "dob": 2005,
+	"toys": ["orange platypus"]
+      }
+    ]
+  },
+  {
+    "address": "199 Cliff ave.",
+    "owners": ["June", "James"],
+    "pets": [
+      {
+	"name": "Sophie", "dob": 2009,
+	"toys": ["knotted rope", "octopus-like thing",
+		 "piranha squeak toy"]
+      },
+      {
+	"name": "Theo", "dob": 2009
+      }
+    ]
+  }
+]
+```
+
 
 ## Design choices
 
