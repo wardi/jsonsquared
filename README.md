@@ -171,6 +171,7 @@ Empty lists are represented as a single delimiter with
 nothing in front, e.g.:
 
 name | pets[,]
+--- | ---
 May | ,
 
 converts to:
@@ -182,10 +183,8 @@ converts to:
     "pets": []
   }
 ]
-
-
-
 ```
+
 
 ### Nested objects
 
