@@ -120,7 +120,7 @@ Or vertically:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
-Tim | 19 | green
+Tim | 19, | green
  | 14 | blue
  | 18 |
 
@@ -128,8 +128,8 @@ Or a mixture:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
-Tim | 19,14, | green
- | 18 | blue
+Tim | 19 | green
+ | 14,18, | blue
 
 
 convert identically to:
