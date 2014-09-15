@@ -1,4 +1,4 @@
-<!-- vim: set sw=2 sts=2 spell spelllang=en_us: -->
+<!-- vim: set et sw=2 sts=2 spell spelllang=en_us: -->
 
 # [JSON]²
 
@@ -47,15 +47,13 @@ Converts to:
     "owners": ["Tim"],
     "pets": [
       {
-	"name": "Fluffy", "dob": 2009,
-	"toys": ["pink elephant", "green ball"]
+        "name": "Fluffy", "dob": 2009, "toys": ["pink elephant", "green ball"]
       },
       {
-	"name": "Beast", "dob": 2011
+        "name": "Beast", "dob": 2011
       },
       {
-	"name": "Tiny", "dob": 2005,
-	"toys": ["orange platypus"]
+        "name": "Tiny", "dob": 2005, "toys": ["orange platypus"]
       }
     ]
   },
@@ -64,12 +62,11 @@ Converts to:
     "owners": ["June", "James"],
     "pets": [
       {
-	"name": "Sophie", "dob": 2009,
-	"toys": ["knotted rope", "octopus-like thing",
-		 "piranha squeak toy"]
+        "name": "Sophie", "dob": 2009,
+        "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"]
       },
       {
-	"name": "Theo", "dob": 2009
+        "name": "Theo", "dob": 2009
       }
     ]
   }
