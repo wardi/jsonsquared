@@ -153,6 +153,7 @@ any quoting implied by JSON strings, so don't use a delimiter that may
 appear in a JSON string or you may not get the result you expect, e.g.:
 
 name | says[,]
+--- | ---
 Ryan | "hi, there", "friend"
 
 converts to:
