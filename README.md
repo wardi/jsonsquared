@@ -64,12 +64,15 @@ programs that produce or parse JSON may introduce these errors.
 
 ### JSON strings
 
-Values that have double-quotes (straight `"` left `“` or right `”`
-for Excel-friendliness, matching not required)
-as their first and last characters will
-have their first and last characters removed, then be parsed as
-JSON strings. Straight double quotes (`"`) and backslashes (`\`) must be
-backslash-escaped. e.g:
+Values that have double-quotesas their first and last characters,
+ignoring whitespace on the left and right, will
+have the quotes and surrounding whitespace removed, then be
+[parsed as JSON strings](docs/string.gif)
+. Double-quotes may be straight `"` left `“` or right `”`
+for Excel-friendliness, matching quotes is not required.
+
+Within the JSON string straight double quotes (`"`) and backslashes
+(`\`) must be backslash-escaped. e.g:
 
 CSV value | JSON value
 --- | ---
