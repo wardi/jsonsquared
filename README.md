@@ -79,7 +79,7 @@ Within the JSON string straight double quotes (`"`) and backslashes
 
 CSV value | JSON value
 --- | ---
-`   "what's that?"` | `"what's that?"`
+`   "what's that?"` | `"what's that?"`
 `“she said \"hi\".“` | `"she said \"hi\"."`
 
 This format is typically used only for:
@@ -99,7 +99,7 @@ whitespace is maintained.
 
 CSV value | JSON value
 --- | ---
-`   what's that?` | `"   what's that?"`
+`   what's that?` | `"   what's that?"`
 `True` | `"True"`
 `0x8000` | `"0x8000"`
 `I said "sure."` | `"I said \"sure.\""`
