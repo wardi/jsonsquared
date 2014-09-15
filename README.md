@@ -46,28 +46,18 @@ Converts to:
     "address": "12 Oak ave.",
     "owners": ["Tim"],
     "pets": [
-      {
-        "name": "Fluffy", "dob": 2009, "toys": ["pink elephant", "green ball"]
-      },
-      {
-        "name": "Beast", "dob": 2011
-      },
-      {
-        "name": "Tiny", "dob": 2005, "toys": ["orange platypus"]
-      }
+      { "name": "Fluffy", "dob": 2009, "toys": ["pink elephant", "green ball"] },
+      { "name": "Beast", "dob": 2011 },
+      { "name": "Tiny", "dob": 2005, "toys": ["orange platypus"] }
     ]
   },
   {
     "address": "199 Cliff ave.",
     "owners": ["June", "James"],
     "pets": [
-      {
-        "name": "Sophie", "dob": 2009,
-        "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"]
-      },
-      {
-        "name": "Theo", "dob": 2009
-      }
+      { "name": "Sophie", "dob": 2009,
+        "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"] },
+      { "name": "Theo", "dob": 2009 }
     ]
   }
 ]
