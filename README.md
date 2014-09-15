@@ -1,3 +1,5 @@
+<!-- vim: set sw=2 sts=2 spell spelllang=en_us: -->
+
 # [JSON]²
 
 JSON Squared is a library for lossless conversion between
@@ -17,13 +19,15 @@ Features:
 * Not limited to data files that fit in RAM, can stream data or use
   disk space temporarily for conversions
 * Simple, clear error reporting for parsing errors
+* JSON files with repeated keys or with keys in a special order are
+  an abomination and will not be supported, even though we could
 
 Limitations:
 
 * Topmost JSON element must be a list containing only JSON objects
   (for JSON Lines each topmost element must be a JSON object)
 * JSON objects must have at least one simple value, e.g.
-  a string or number.
+  a string or number
 
 
 ## Design choices
@@ -72,7 +76,7 @@ have the quotes and surrounding whitespace removed, then be
 for Excel-friendliness, matching quotes is not required.
 
 Within the JSON string straight double quotes (`"`) and backslashes
-(`\`) must be backslash-escaped. e.g:
+(`\`) must be backslash-escaped, e.g.:
 
 CSV value | JSON value
 --- | ---
@@ -99,37 +103,87 @@ CSV value | JSON value
 `what's that?` | `"what's that?"`
 `True` | `"True"`
 `0x8000` | `"0x8000"`
-`I said "sure."` | `"I said \"sure.\"`
+`I said "sure."` | `"I said \"sure.\""`
 
 ### Lists of simple types
 
-Lists of simple types like numbers and strings may be represented
+Lists of the simple types above may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
 in neighboring rows. For lists a `[𝑥]` suffix is added to
-the column heading, where `𝑥` is the delimiter chosen. e.g.:
+the column heading, where `𝑥` is the delimiter chosen, e.g. delimited:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
-Tim | 19a,14b,18a | green blue
+Tim | 19,14,18 | green blue
 
 Or vertically:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
-Tim | 19a | green
- | 14b | blue
- | 18a |
+Tim | 19 | green
+ | 14 | blue
+ | 18 |
 
-Both convert to:
+Or a mixture:
+
+name | rooms[,] | colors[ ]
+--- | --- | ---
+Tim | 19,14, | green
+ | 18 | blue
+
+
+convert identically to:
 
 ```json
 [
   {
     "name": "Tim",
-    "rooms": ["19a", "14b", "18a"],
+    "rooms": [19, 14, 18],
     "colors": ["green", "blue"]
   }
 ]
+```
+
+A single trailing delimiter may be included in each cell and will be
+ignored, as shown the example above.
+
+JSON strings are supported within
+lists, but lists are first separated by their delimiter ignoring
+any quoting implied by JSON strings, so don't use a delimiter that may
+appear in a JSON string or you may not get the result you expect, e.g.:
+
+name | says[,]
+Ryan | "hi, there", "friend"
+
+converts to:
+
+```json
+[
+  {
+    "name": "Ryan",
+    "says": ["\"hi", " there\"", "friend"]
+  }
+]
+```
+
+Empty lists are represented as a single delimiter with
+nothing in front, e.g.:
+
+name | pets[,]
+May | ,
+
+converts to:
+
+```json
+[
+  {
+    "name": "May",
+    "pets": []
+  }
+]
+
+
+
 ```
 
 ### Nested objects
