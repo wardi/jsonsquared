@@ -25,8 +25,6 @@ Features:
 Limitations:
 
 * Topmost JSON element must be a list (existing restriction for JSON Lines)
-* JSON objects containing lists or other objects must also have at
-  least one simple value, e.g. a string or number
 
 
 ## Design choices
