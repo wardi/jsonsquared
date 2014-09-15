@@ -55,8 +55,11 @@ Converts to:
     "address": "199 Cliff ave.",
     "owners": ["June", "James"],
     "pets": [
-      { "name": "Sophie", "dob": 2009,
-        "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"] },
+      {
+        "name": "Sophie",
+        "dob": 2009,
+        "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"]
+      },
       { "name": "Theo", "dob": 2009 }
     ]
   }
