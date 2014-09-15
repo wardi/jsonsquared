@@ -1,4 +1,4 @@
-# JSON Squared
+# [JSON]²
 
 JSON Squared is a library for lossless conversion between
 [JSON](http://json.org) or
