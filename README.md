@@ -22,15 +22,13 @@ Limitations:
 
 * Topmost JSON element must be a list containing only JSON objects
   (for JSON Lines each topmost element must be a JSON object)
-* Lists directly containing other lists are not currently supported,
-  e.g.: `[[1,2],[3,4]]`
 * JSON objects must have at least one simple value, e.g.
   a string or number.
 
 
 ## Design choices
 
-### Simple types
+### Reserved values
 
 CSV allows only string values. JSON Squared maintains JSON types
 by reserving the following string values:
@@ -40,10 +38,15 @@ CSV value | JSON value
 `null` | `null`
 `true` | `true`
 `false` | `false`
+`[]` | `[]`
+`{}` | `{}`
 
-When these exact lowercase strings appear as the complete value
-of a CSV cell they will be converted to the corresponding special
+When these exact lowercase strings appear as the value
+of a CSV cell, ignoring whitespace on the left and right,
+they will be converted to the corresponding special
 JSON value.
+
+### Numbers
 
 Any value that can be [parsed as a JSON number](docs/number.gif)
 will be represented as a number in JSON. e.g.:
@@ -59,8 +62,11 @@ they appear and not introduce any underflow, overflow or rounding
 errors during conversions. Beware that spreadsheet programs and
 programs that produce or parse JSON may introduce these errors.
 
-Values that have double-quotes (straight `"` left `“` or right `”`)
-as their first and last characters (matching type not necessary) will
+### JSON strings
+
+Values that have double-quotes (straight `"` left `“` or right `”`
+for Excel-friendliness, matching not required)
+as their first and last characters will
 have their first and last characters removed, then be parsed as
 JSON strings. Straight double quotes (`"`) and backslashes (`\`) must be
 backslash-escaped. e.g:
@@ -80,6 +86,8 @@ This format is typically used only for:
 Strings containing newlines are not escaped by default, but escaping
 may be forced on the command line.
 
+### Normal strings
+
 Any other value is treated as a string value. Leading and trailing
 whitespace is maintained.
 
@@ -94,17 +102,16 @@ CSV value | JSON value
 
 Lists of simple types like numbers and strings may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
-in neighboring rows. For delimited lists a `[𝑥]` suffix is added to
-the column heading, where `𝑥` is the delimiter used. For vertical
-lists a `[]` suffix is used. e.g. Delimited:
+in neighboring rows. For lists a `[𝑥]` suffix is added to
+the column heading, where `𝑥` is the delimiter chosen. e.g.:
 
-name | rooms[,] | colors[,]
+name | rooms[,] | colors[ ]
 --- | --- | ---
-Tim | 19a,14b,18a | green,blue
+Tim | 19a,14b,18a | green blue
 
-Vertical:
+Or vertically:
 
-name | rooms[] | colors[]
+name | rooms[,] | colors[ ]
 --- | --- | ---
 Tim | 19a | green
  | 14b | blue
