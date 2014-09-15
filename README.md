@@ -2,7 +2,7 @@
 
 # [JSON]²
 
-JSON Squared is a library for lossless conversion between
+JSON Squared is a (planned) library for lossless conversion between
 [JSON](http://json.org) or
 [JSON Lines](http://jsonlines.org) and CSV or Excel format in a sparse
 style convenient for editing.
