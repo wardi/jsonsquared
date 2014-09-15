@@ -70,8 +70,8 @@ programs that produce or parse JSON may introduce these errors.
 Values that have double-quotesas their first and last characters,
 ignoring whitespace on the left and right, will
 have the quotes and surrounding whitespace removed, then be
-[parsed as JSON strings](docs/string.gif)
-. Double-quotes may be straight `"` left `“` or right `”`
+[parsed as JSON strings](docs/string.gif).
+Double-quotes may be straight `"` left `“` or right `”`
 for Excel-friendliness, matching quotes is not required.
 
 Within the JSON string straight double quotes (`"`) and backslashes
@@ -94,7 +94,7 @@ may be forced on the command line.
 
 ### Normal strings
 
-Any other value is treated as a string value. Leading and trailing
+Any other value is treated as a normal string value. Leading and trailing
 whitespace is maintained.
 
 CSV value | JSON value
@@ -115,7 +115,7 @@ name | rooms[,] | colors[ ]
 --- | --- | ---
 Tim | 19,14,18 | green blue
 
-Or vertically:
+vertical:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
@@ -123,7 +123,7 @@ Tim | 19, | green
  | 14 | blue
  | 18 |
 
-Or a mixture:
+or a mix of delimited and vertical:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
@@ -144,7 +144,7 @@ convert identically to:
 ```
 
 A single trailing delimiter may be included in each cell and will be
-ignored, as shown the example above.
+ignored, as shown the examples above.
 
 JSON strings are supported within
 lists, but lists are first separated by their delimiter ignoring
@@ -189,7 +189,7 @@ converts to:
 
 JSON objects nested directly inside other objects are represented
 by extra columns with the parent name and child name joined with a
-period (`.`).  e.g.:
+period (`.`), e.g.:
 
 id | name.en | name.fr
 --- | --- | ---
@@ -213,7 +213,7 @@ becomes:
 
 Lists of JSON objects within other objects are represented
 by extra columns with the parent name and child name joined with a
-forward slash (`/`). e.g.:
+forward slash (`/`), e.g.:
 
 address | residents/name | residents/age | cars/make | cars/colour
 --- | --- | --- | --- | ---
