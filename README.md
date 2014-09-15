@@ -7,10 +7,10 @@ JSON Squared is a (planned) library for lossless conversion between
 [JSON Lines](http://jsonlines.org) and CSV or Excel format in a sparse
 style convenient for editing.
 
-Many libraries exist for converting between JSON and CSV. This one
+Many libraries exist for converting between JSON and CSV. This library
 makes the assumption that your JSON contains many objects with a
-similar structure. For each value that is a list of objects it
-is assumed that the objects in the list share a similar structure.
+similar structure. For each path (list of keys) to a list of objects it
+is assumed that the objects in the lists share a similar structure.
 
 Features:
 
@@ -24,10 +24,9 @@ Features:
 
 Limitations:
 
-* Topmost JSON element must be a list containing only JSON objects
-  (for JSON Lines each topmost element must be a JSON object)
-* JSON objects must have at least one simple value, e.g.
-  a string or number
+* Topmost JSON element must be a list (existing restriction for JSON Lines)
+* JSON objects containing lists or other objects must also have at
+  least one simple value, e.g. a string or number
 
 
 ## Design choices
