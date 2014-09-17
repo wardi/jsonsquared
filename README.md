@@ -32,8 +32,8 @@ address | owners[,] | pets/name | pets/dob | pets/toys[,]
 12 Oak ave. | Tim | Fluffy | 2009 | pink elephant,green ball
  | | Beast | 2011 |
  | | Tiny | 2005 | orange platypus
-199 Cliff ave. | June | Sophie | 2009 | knotted rope
- | James | | | octopus-like thing
+199 Cliff ave. | June,James | Sophie | 2009 | knotted rope
+ | | | | octopus-like thing
  | | | | piranha squeak toy
  | | Theo | 2009 |
 
@@ -236,10 +236,7 @@ id | name.en | name.fr
 [
   {
     "id": 190007,
-    "name": {
-      "en": "Franklin",
-      "fr": "Benjamin"
-    }
+    "name": {"en": "Franklin", "fr": "Benjamin"}
   }
 ]
 ```
@@ -372,11 +369,11 @@ pretty boring JSON |
 "pretty boring JSON"
 ```
 
-### Lists with mixed types
+### Mixed value types
 
-Simple types, objects and other lists may all appear in the same lists
-by having the same column specified different ways. Only one column may
-be given a value.
+Simple types, objects and other lists may all appear as values for the
+same keys in different objects by having the same column name specified
+different ways. Only one column may be given a value for each object.
 
 id | foo | foo[,] | foo.bar | foo/baz
 --- | --- | --- | --- | ---
@@ -390,6 +387,33 @@ id | foo | foo[,] | foo.bar | foo/baz
   {"id": 1, "foo": 42},
   {"id": 2, "foo": [7, 6]},
   {"id": 3, "foo": {"bar": "carbon rod"}},
-  {"id": 4, "foo": [{"baz": true}])
+  {"id": 4, "foo": [{"baz": true}]}
 ]
 ```
+
+Within a list we can switch between objects types on different rows while
+we build the list.
+
+collection | things[,] | things/id | things/name
+--- | --- | --- | ---
+heap | 19,{} | |
+ | | c=64 |
+ | | 1541 | disk drive
+ | false | |
+
+```json
+[
+  {
+    "collection": "heap",
+    "things": [
+      19,
+      {},
+      {"id": "c=64"},
+      {"id": 1541, "name": "disk drive"},
+      false
+    ]
+  }
+]
+```
+
+This pattern is necessary to represent empty objects 
