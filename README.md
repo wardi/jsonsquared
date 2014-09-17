@@ -274,6 +274,46 @@ becomes:
 ]
 ```
 
+### Lists of lists
+
+Lists can be nested in column headings, but delimiters are removed
+for all but the last level, e.g:
+
+name | data[,] | data[][,]
+--- | --- | ---
+my grid | 1 | 2,3
+ | 4 | 5,6
+
+becomes:
+
+```json
+[
+  {
+    "name": "my grid",
+    "data": [1, [2, 3], 4, [5, 6]]
+  }
+]
+```
+
+Empty lists are used to break up nested lists without adding an
+element in between, e.g.:
+
+name | data[,] | data[][,]
+--- | --- | ---
+grid2 | , | 1,2
+ | , | 3,4
+
+becomes:
+
+```json
+[
+  {
+    "name": "my grid",
+    "data": [[1, 2], [3, 4]]
+  }
+]
+```
+
 ## Edge cases
 
 ### Unusual keys
@@ -301,7 +341,7 @@ becomes:
 ```
 
 You must use the Unicode-escaped versions of the special characters
-or your keys will be interpreted incorrectly. For your reference:
+or your keys will be interpreted incorrectly. For reference:
 
 Original | JSON Escaped
 --- | ---
