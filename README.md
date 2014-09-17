@@ -104,7 +104,7 @@ programs that produce or parse JSON may introduce these errors.
 
 ### JSON strings
 
-Values that have double-quotesas their first and last characters,
+Values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will
 have the quotes and surrounding whitespace removed, then be
 [parsed as JSON strings](docs/string.gif).
@@ -276,13 +276,13 @@ becomes:
 
 ### Lists of lists
 
-Lists can be nested in column headings, but delimiters are removed
-for all but the last level, e.g:
+Lists can be nested in column headings by replacing the list markers
+with forward slashes for all but the last level, e.g:
 
-name | data[,] | data[][,]
+name | data[,] | data/[,] | data//[,]
 --- | --- | ---
-my grid | 1 | 2,3
- | 4 | 5,6
+my grid | 1 | 2,3 | 4
+ | 5 | 6,7 |
 
 becomes:
 
@@ -290,18 +290,18 @@ becomes:
 [
   {
     "name": "my grid",
-    "data": [1, [2, 3], 4, [5, 6]]
+    "data": [1, [2, 3, [4]], 5, [6, 7]]
   }
 ]
 ```
 
-Empty lists are used to break up nested lists without adding an
-element in between, e.g.:
+Empty lists are used to break up nested lists without adding
+elements in between, e.g.:
 
-name | data[,] | data[][,]
---- | --- | ---
-grid2 | , | 1,2
- | , | 3,4
+name | data[>] | data/[>] | data//[,]
+--- | --- | --- | ---
+grid2 | > | > | 1,2
+ | | > | 3,4
 
 becomes:
 
@@ -309,10 +309,14 @@ becomes:
 [
   {
     "name": "my grid",
-    "data": [[1, 2], [3, 4]]
+    "data": [[[1, 2], [3, 4]]]
   }
 ]
 ```
+
+Choosing a delimiter more visible than a comma, such as the
+greater-than sign above (`>`), helps make nesting in lists that
+only contain lists more visible
 
 ## Edge cases
 
