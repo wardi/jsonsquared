@@ -19,12 +19,11 @@ Features:
 * Not limited to data files that fit in RAM, can stream data or use
   disk space temporarily for conversions
 * Simple, clear error reporting for parsing errors
-* JSON files with repeated keys or with keys in a special order are
-  an abomination and will not be supported, even though we could
 
 Limitations:
 
-* Topmost JSON element must be a list (existing restriction for JSON Lines)
+* JSON files with repeated keys or with keys in a special order are
+  not supported
 
 ## Example
 
