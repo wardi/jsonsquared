@@ -274,4 +274,24 @@ becomes:
 ]
 ```
 
+## Edge cases
 
+### Top of JSON is an object not a list
+
+We use `.` as a prefix in the column heading to indicate keys of a
+top-level object, e.g.:
+
+.title | .things[,]
+--- | ---
+spelling | cat
+ | dog
+ | ball
+
+becomes:
+
+```json
+{
+  "title": "spelling",
+  "things": ["cat", "dog", "ball"]
+}
+```
