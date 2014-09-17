@@ -276,9 +276,44 @@ becomes:
 
 ## Edge cases
 
-### Top of JSON is an object not a list
+### Unusual keys
 
-We use `.` as a prefix in the column heading to indicate keys of a
+Keys that are empty strings or strings containing periods (`.`),
+double quotes (`"`), forward slashes (`/`) or
+opening brackets (`[`) can given as JSON strings, e.g.:
+
+odd."" | "\u005B\u002C]" | "\u002F"/"\u002E\u002E"
+--- | --- | ---
+1 | 2 | 3
+
+becomes:
+
+```json
+[
+  {
+    "odd": {"": 1},
+    "[,]": 2,
+    "/": [
+      {"..": 3}
+    ]
+  }
+]
+```
+
+You must use the Unicode-escaped versions of the special characters
+or your keys will be interpreted incorrectly. For your reference:
+
+Original | JSON Escaped
+--- | ---
+`.` | `\u002E`
+`"` | `\u0022`
+`/` | `\u002F`
+`[` | `\u005B`
+
+
+### Top of JSON is not a list
+
+We use period (`.`) as a prefix in the column heading to indicate keys of a
 top-level object, e.g.:
 
 .title | .things[,]
@@ -295,3 +330,16 @@ becomes:
   "things": ["cat", "dog", "ball"]
 }
 ```
+
+For simple objects we use a period as a column heading by itself, e.g:
+
+. |
+--- |
+just a string |
+
+becomes:
+
+```json
+"just a string"
+```
+
