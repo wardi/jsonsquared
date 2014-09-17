@@ -232,8 +232,6 @@ id | name.en | name.fr
 --- | --- | ---
 190007 | Franklin | Benjamin
 
-becomes:
-
 ```json
 [
   {
@@ -256,8 +254,6 @@ address | residents/name | residents/age | cars/make | cars/colour
 --- | --- | --- | --- | ---
 12 oak ave. | sam | 43 | honda | gray
  | linda | 45 | |
-
-becomes:
 
 ```json
 [
@@ -284,8 +280,6 @@ name | data[,] | data/[,] | data//[,]
 my grid | 1 | 2,3 | 4
  | 5 | 6,7 |
 
-becomes:
-
 ```json
 [
   {
@@ -296,14 +290,15 @@ becomes:
 ```
 
 Empty lists are used to break up nested lists without adding
-elements in between, e.g.:
+elements in between. Choose a delimiter more visible than a comma
+for lists containing only lists to help make nesting clearer, e.g.:
+
+, e.g.:
 
 name | data[>] | data/[>] | data//[,]
 --- | --- | --- | ---
 grid2 | > | > | 1,2
  | | > | 3,4
-
-becomes:
 
 ```json
 [
@@ -313,10 +308,6 @@ becomes:
   }
 ]
 ```
-
-Choosing a delimiter more visible than a comma, such as the
-greater-than sign above (`>`), helps make nesting in lists that
-only contain lists more visible
 
 ## Edge cases
 
@@ -329,8 +320,6 @@ opening brackets (`[`) can given as JSON strings, e.g.:
 odd."" | "\u005B\u002C]" | "\u002F"/"\u002E\u002E"
 --- | --- | ---
 1 | 2 | 3
-
-becomes:
 
 ```json
 [
@@ -366,8 +355,6 @@ spelling | cat
  | dog
  | ball
 
-becomes:
-
 ```json
 {
   "title": "spelling",
@@ -379,11 +366,30 @@ For simple objects we use a period as a column heading by itself, e.g:
 
 . |
 --- |
-just a string |
-
-becomes:
+pretty boring JSON |
 
 ```json
-"just a string"
+"pretty boring JSON"
 ```
 
+### Lists with mixed types
+
+Simple types, objects and other lists may all appear in the same lists
+by having the same column specified different ways. Only one column may
+be given a value.
+
+id | foo | foo[,] | foo.bar | foo/baz
+--- | --- | --- | --- | ---
+1 | 42 | | |
+2 | | 7,6 | |
+3 | | | "carbon rod" |
+4 | | | | true
+
+```json
+[
+  {"id": 1, "foo": 42},
+  {"id": 2, "foo": [7, 6]},
+  {"id": 3, "foo": {"bar": "carbon rod"}},
+  {"id": 4, "foo": [{"baz": true}])
+]
+```
