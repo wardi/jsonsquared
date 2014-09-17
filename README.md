@@ -280,7 +280,7 @@ Lists can be nested in column headings by replacing the list markers
 with forward slashes for all but the last level, e.g:
 
 name | data[,] | data/[,] | data//[,]
---- | --- | ---
+--- | --- | --- | ---
 my grid | 1 | 2,3 | 4
  | 5 | 6,7 |
 
