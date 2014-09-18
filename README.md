@@ -392,7 +392,8 @@ id | foo | foo[,] | foo.bar | foo/baz
 ```
 
 Within a list we can switch between objects types on different rows while
-we build the list.
+we build the list. This is the only way to include empty objects (`{}`)
+in lists along with non-empty objects.
 
 collection | things[,] | things/id | things/name
 --- | --- | --- | ---
@@ -416,4 +417,25 @@ heap | 19,{} | |
 ]
 ```
 
-This pattern is necessary to represent empty objects 
+### Explicit object boundaries
+
+When an object in a list contains no simple-typed values we may need to
+mark where that object ends and where the next object in the same list
+begins.
+
+very[>] | very/listy[,]
+--- | ---
+> | do,re
+  | mi,fa
+> | so,la
+  | ti,do
+
+```json
+[
+  {
+    "very":[
+      {"listy": ["do", "re", "mi", "fa"]},
+      {"listy": ["so", "la", "ti", "do"]}
+    ]
+  }
+]
