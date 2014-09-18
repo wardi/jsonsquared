@@ -265,13 +265,13 @@ with forward slashes for all but the last level.
 
 name | data[,] | data/[,] | data//[,]
 --- | --- | --- | ---
-my grid | 1 | 2,3 | 4
+nested | 1 | 2,3 | 4
  | 5 | 6,7 |
 
 ```json
 [
   {
-    "name": "my grid",
+    "name": "nested",
     "data": [1, [2, 3, [4]], 5, [6, 7]]
   }
 ]
@@ -283,13 +283,13 @@ for lists containing only lists to help make nesting clearer.
 
 name | data[>] | data/[>] | data//[,]
 --- | --- | --- | ---
-grid2 | > | > | 1,2
+lumpy | > | > | 1,2
  | | > | 3,4
 
 ```json
 [
   {
-    "name": "my grid",
+    "name": "lumpy",
     "data": [[[1, 2], [3, 4]]]
   }
 ]
@@ -301,14 +301,14 @@ This works for lists of lists at the top-level too.
 --- | ---
 > | 1,0,0,0
 > | 0,1,0,0
-> | 0,0,1,1
+> | 0,0,1,-1
 > | 0,0,0,1
 
 ```json
 [
   [1, 0, 0, 0],
   [0, 1, 0, 0],
-  [0, 0, 1, 1],
+  [0, 0, 1, -1],
   [0, 0, 0, 1]
 ]
 ```
