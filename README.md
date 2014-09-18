@@ -78,7 +78,6 @@ CSV value | JSON value
 `null` | `null`
 `true` | `true`
 `false` | `false`
-`[]` | `[]`
 `{}` | `{}`
 
 When these exact lowercase strings appear as the value
@@ -448,8 +447,7 @@ in lists along with non-empty objects.
 
 collection | things[,] | things/id | things/name
 --- | --- | --- | ---
-heap | 19,{} | |
- | | c=64 |
+heap | 19,{} | C=64 |
  | | 1541 | disk drive
  | false | |
 
@@ -460,7 +458,7 @@ heap | 19,{} | |
     "things": [
       19,
       {},
-      {"id": "c=64"},
+      {"id": "C=64"},
       {"id": 1541, "name": "disk drive"},
       false
     ]
