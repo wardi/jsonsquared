@@ -66,28 +66,28 @@ Converts to:
 ```
 
 
-## Design choices
+## Simple types
 
 ### Reserved values
 
 CSV allows only string values. JSON Squared maintains JSON types
-by reserving the following string values:
+in CSV files by reserving the following string values:
 
-CSV value | JSON value
+CSV string | JSON value
 --- | ---
 `null` | `null`
 `true` | `true`
 `false` | `false`
 `{}` | `{}`
 
-When these exact lowercase strings appear as the value
+When these exact strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
-they will be converted to the corresponding special
+they will be converted to their corresponding special
 JSON value.
 
 ### Numbers
 
-Any value that can be [parsed as a JSON number](docs/number.gif)
+Any CSV string that can be [parsed as a JSON number](docs/number.gif)
 will be represented as a number in JSON.
 
 CSV value | JSON value
@@ -98,51 +98,49 @@ CSV value | JSON value
 
 JSON Squared will leave numbers exactly as
 they appear and not introduce any underflow, overflow or rounding
-errors during conversions. Beware that spreadsheet programs and
-programs that produce or parse JSON may introduce these errors.
+errors during conversions.
 
 ### JSON strings
 
-Values that have double-quotes as their first and last characters,
+CSV strings that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will
-have the quotes and surrounding whitespace removed, then be
+have the quotes and surrounding whitespace removed then be
 [parsed as JSON strings](docs/string.gif).
-Double-quotes may be straight `"` left `“` or right `”`
-for Excel-friendliness, matching quotes is not required.
+Double-quotes may be straight (`"`) left (`“`) or right (`”`)
+for Excel-friendliness. Matching left and right quotes is not required.
 
 Within the JSON string straight double quotes (`"`) and backslashes
 (`\`) must be backslash-escaped.
 
-CSV value | JSON value
+CSV string | JSON value
 --- | ---
 `   "what's that?"` | `"what's that?"`
 `“she said \"hi\".“` | `"she said \"hi\"."`
 
-This format is typically used only for:
+JSON strings are typically used for:
 
 * the empty string: `""`
 * strings with unprintable control codes, e.g.: `"\u0003\u0000"`
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
 
-Strings containing newlines are not escaped by default, but escaping
-may be forced on the command line.
-
 ### Normal strings
 
 Any other value is treated as a normal string value. Leading and trailing
-whitespace is maintained.
+whitespace is kept intact.
 
-CSV value | JSON value
+CSV string | JSON value
 --- | ---
 `   what's that?` | `"   what's that?"`
 `True` | `"True"`
 `0x8000` | `"0x8000"`
 `I said "sure."` | `"I said \"sure.\""`
 
+## Compound types
+
 ### Lists of simple types
 
-Lists of the simple types above may be represented
+Lists of simple types may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
 in neighboring rows. For lists a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter chosen.
@@ -161,7 +159,12 @@ Tim | 19,14,18 | green blue
 ]
 ```
 
-May also be written as:
+Lists continue to neighboring rows if those row do not contain
+an element that forces the start of a new object. In this example
+a value in the "name" column would start a new object.
+
+A single trailing delimiter may be included in each cell and will
+be ignored. These examples are equivalent to the one above:
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
@@ -169,20 +172,14 @@ Tim | 19, | green
  | 14 | blue
  | 18 |
 
-Or as mix of delimited and vertical:
-
 name | rooms[,] | colors[ ]
 --- | --- | ---
 Tim | 19 | green
  | 14,18, | blue
 
-A single trailing delimiter may be included in each cell and will be
-ignored, as shown the examples above.
-
-JSON strings are supported within
-lists, but lists are first separated by their delimiter ignoring
-any quoting implied by JSON strings, so don't use a delimiter that may
-appear in a JSON string or you may not get the result you expect.
+JSON strings are supported within lists, but they may not contain
+the delimiter used by the list. Lists are split on their delimiter
+before string values are parsed.
 
 name | says[,]
 --- | ---
@@ -197,7 +194,8 @@ Ryan | "hi, there", "friend"
 ]
 ```
 
-Empty lists are represented as a single delimiter with nothing in front.
+Empty lists in JSON Squared are written as a single delimiter with
+nothing in front.
 
 name | pets[,]
 --- | ---
