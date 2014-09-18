@@ -421,13 +421,14 @@ heap | 19,{} | |
 
 When an object in a list contains no simple-typed values we may need to
 mark where that object ends and where the next object in the same list
-begins.
+begins. We use the same method as when we have nested lists: insert an
+empty list one level above.
 
-very[>] | very/listy[,]
+very[-] | very/listy[,]
 --- | ---
-> | do,re
+- | do,re
   | mi,fa
-> | so,la
+- | so,la
   | ti,do
 
 ```json
@@ -439,3 +440,18 @@ very[>] | very/listy[,]
     ]
   }
 ]
+
+This works with the top-level list too.
+
+[>] | listy[,]
+--- | ---
+> | how,are,things
+> | fine
+  | thanks
+
+```json
+[
+  {"listy": ["how", "are", "things"]},
+  {"listy": ["fine", "thanks"]}
+]
+```
