@@ -440,6 +440,7 @@ very[-] | very/listy[,]
     ]
   }
 ]
+```
 
 This works with the top-level list too.
 
