@@ -89,7 +89,7 @@ JSON value.
 ### Numbers
 
 Any value that can be [parsed as a JSON number](docs/number.gif)
-will be represented as a number in JSON. e.g.:
+will be represented as a number in JSON.
 
 CSV value | JSON value
 --- | ---
@@ -112,7 +112,7 @@ Double-quotes may be straight `"` left `“` or right `”`
 for Excel-friendliness, matching quotes is not required.
 
 Within the JSON string straight double quotes (`"`) and backslashes
-(`\`) must be backslash-escaped, e.g.:
+(`\`) must be backslash-escaped.
 
 CSV value | JSON value
 --- | ---
@@ -146,29 +146,11 @@ CSV value | JSON value
 Lists of the simple types above may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
 in neighboring rows. For lists a `[𝑥]` suffix is added to
-the column heading, where `𝑥` is the delimiter chosen, e.g. delimited:
+the column heading, where `𝑥` is the delimiter chosen.
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
 Tim | 19,14,18 | green blue
-
-vertical:
-
-name | rooms[,] | colors[ ]
---- | --- | ---
-Tim | 19, | green
- | 14 | blue
- | 18 |
-
-or a mix of delimited and vertical:
-
-name | rooms[,] | colors[ ]
---- | --- | ---
-Tim | 19 | green
- | 14,18, | blue
-
-
-convert identically to:
 
 ```json
 [
@@ -180,19 +162,32 @@ convert identically to:
 ]
 ```
 
+May also be written as:
+
+name | rooms[,] | colors[ ]
+--- | --- | ---
+Tim | 19, | green
+ | 14 | blue
+ | 18 |
+
+Or as mix of delimited and vertical:
+
+name | rooms[,] | colors[ ]
+--- | --- | ---
+Tim | 19 | green
+ | 14,18, | blue
+
 A single trailing delimiter may be included in each cell and will be
 ignored, as shown the examples above.
 
 JSON strings are supported within
 lists, but lists are first separated by their delimiter ignoring
 any quoting implied by JSON strings, so don't use a delimiter that may
-appear in a JSON string or you may not get the result you expect, e.g.:
+appear in a JSON string or you may not get the result you expect.
 
 name | says[,]
 --- | ---
 Ryan | "hi, there", "friend"
-
-converts to:
 
 ```json
 [
@@ -203,14 +198,11 @@ converts to:
 ]
 ```
 
-Empty lists are represented as a single delimiter with
-nothing in front, e.g.:
+Empty lists are represented as a single delimiter with nothing in front.
 
 name | pets[,]
 --- | ---
 May | ,
-
-converts to:
 
 ```json
 [
@@ -226,7 +218,7 @@ converts to:
 
 JSON objects nested directly inside other objects are represented
 by extra columns with the parent name and child name joined with a
-period (`.`), e.g.:
+period (`.`).
 
 id | name.en | name.fr
 --- | --- | ---
@@ -245,9 +237,9 @@ id | name.en | name.fr
 
 Lists of JSON objects within other objects are represented
 by extra columns with the parent name and child name joined with a
-forward slash (`/`), e.g.:
+forward slash (`/`).
 
-address | residents/name | residents/age | cars/make | cars/colour
+address | residents/name | residents/age | cars/make | cars/color
 --- | --- | --- | --- | ---
 12 oak ave. | sam | 43 | honda | gray
  | linda | 45 | |
@@ -270,7 +262,7 @@ address | residents/name | residents/age | cars/make | cars/colour
 ### Lists of lists
 
 Lists can be nested in column headings by replacing the list markers
-with forward slashes for all but the last level, e.g:
+with forward slashes for all but the last level.
 
 name | data[,] | data/[,] | data//[,]
 --- | --- | --- | ---
@@ -288,9 +280,7 @@ my grid | 1 | 2,3 | 4
 
 Empty lists are used to break up nested lists without adding
 elements in between. Choose a delimiter more visible than a comma
-for lists containing only lists to help make nesting clearer, e.g.:
-
-, e.g.:
+for lists containing only lists to help make nesting clearer.
 
 name | data[>] | data/[>] | data//[,]
 --- | --- | --- | ---
@@ -306,13 +296,102 @@ grid2 | > | > | 1,2
 ]
 ```
 
+This works for lists of lists at the top-level too.
+
+[>] | /[,]
+--- | ---
+> | 1,0,0,0
+> | 0,1,0,0
+> | 0,0,1,1
+> | 0,0,0,1
+
+```json
+[
+  [1, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 1, 1],
+  [0, 0, 0, 1]
+]
+```
+
+### Explicit object boundaries
+
+When an object in a list contains no simple-typed values we may need to
+mark where that object ends and where the next object in the same list
+begins. We use the same method as when we have nested lists: insert an
+empty list one level above.
+
+very[-] | very/listy[,]
+--- | ---
+- | do,re
+  | mi,fa
+- | so,la
+  | ti,do
+
+```json
+[
+  {
+    "very":[
+      {"listy": ["do", "re", "mi", "fa"]},
+      {"listy": ["so", "la", "ti", "do"]}
+    ]
+  }
+]
+```
+
+This works with the top-level list too.
+
+[>] | listy[,]
+--- | ---
+> | how,are,things
+> | fine
+  | thanks
+
+```json
+[
+  {"listy": ["how", "are", "things"]},
+  {"listy": ["fine", "thanks"]}
+]
+```
+
 ## Edge cases
+
+### Top-evel objects
+
+We use period (`.`) as a prefix in the column heading to indicate keys of a
+top-level object.
+
+.title | .things[,]
+--- | ---
+spelling | cat
+ | dog
+ | ball
+
+```json
+{
+  "title": "spelling",
+  "things": ["cat", "dog", "ball"]
+}
+```
+
+### Top-level simple types
+
+For simple types we use a period as a column heading by itself.
+
+. |
+--- |
+pretty boring JSON |
+
+```json
+"pretty boring JSON"
+```
+
 
 ### Unusual keys
 
 Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
-opening brackets (`[`) can given as JSON strings, e.g.:
+opening brackets (`[`) can given as JSON strings.
 
 odd."" | "\u005B\u002C]" | "\u002F"/"\u002E\u002E"
 --- | --- | ---
@@ -340,34 +419,6 @@ Original | JSON Escaped
 `/` | `\u002F`
 `[` | `\u005B`
 
-
-### Top of JSON is not a list
-
-We use period (`.`) as a prefix in the column heading to indicate keys of a
-top-level object, e.g.:
-
-.title | .things[,]
---- | ---
-spelling | cat
- | dog
- | ball
-
-```json
-{
-  "title": "spelling",
-  "things": ["cat", "dog", "ball"]
-}
-```
-
-For simple objects we use a period as a column heading by itself, e.g:
-
-. |
---- |
-pretty boring JSON |
-
-```json
-"pretty boring JSON"
-```
 
 ### Mixed value types
 
@@ -417,42 +468,3 @@ heap | 19,{} | |
 ]
 ```
 
-### Explicit object boundaries
-
-When an object in a list contains no simple-typed values we may need to
-mark where that object ends and where the next object in the same list
-begins. We use the same method as when we have nested lists: insert an
-empty list one level above.
-
-very[-] | very/listy[,]
---- | ---
-- | do,re
-  | mi,fa
-- | so,la
-  | ti,do
-
-```json
-[
-  {
-    "very":[
-      {"listy": ["do", "re", "mi", "fa"]},
-      {"listy": ["so", "la", "ti", "do"]}
-    ]
-  }
-]
-```
-
-This works with the top-level list too.
-
-[>] | listy[,]
---- | ---
-> | how,are,things
-> | fine
-  | thanks
-
-```json
-[
-  {"listy": ["how", "are", "things"]},
-  {"listy": ["fine", "thanks"]}
-]
-```
