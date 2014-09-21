@@ -29,11 +29,11 @@ Limitations:
 
 address | owners[,] | pets/name | pets/dob | pets/toys[,]
 --- | --- | --- | --- | ---
-12 Oak ave. | Tim | Fluffy | 2009 | pink elephant,green ball
+12 Oak ave. | Tim K. | Fluffy | 2009 | pink elephant, green ball
  | | Beast | 2011 |
  | | Tiny | 2005 | orange platypus
-199 Cliff ave. | June,James | Sophie | 2009 | knotted rope
- | | | | octopus-like thing
+199 Cliff ave. | June S. | Sophie | 2009 | knotted rope
+ | James N. | | | octopus-like thing
  | | | | piranha squeak toy
  | | Theo | 2009 |
 
@@ -43,7 +43,7 @@ Converts to:
 [
   {
     "address": "12 Oak ave.",
-    "owners": ["Tim"],
+    "owners": ["Tim K."],
     "pets": [
       { "name": "Fluffy", "dob": 2009, "toys": ["pink elephant", "green ball"] },
       { "name": "Beast", "dob": 2011 },
@@ -52,7 +52,7 @@ Converts to:
   },
   {
     "address": "199 Cliff ave.",
-    "owners": ["June", "James"],
+    "owners": ["June S.", "James N."],
     "pets": [
       {
         "name": "Sophie",
