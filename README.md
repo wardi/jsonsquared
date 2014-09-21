@@ -121,17 +121,18 @@ JSON strings are typically used for:
 
 * the empty string: `""`
 * strings with unprintable control codes, e.g.: `"\u0003\u0000"`
+* strings that have significant leading or trailing whitespace
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
 
 ### Normal strings
 
 Any other value is treated as a normal string value. Leading and trailing
-whitespace is kept intact.
+whitespace is removed.
 
 CSV string | JSON value
 --- | ---
-`   what's that?` | `"   what's that?"`
+`   what's that?` | `"what's that?"`
 `True` | `"True"`
 `0x8000` | `"0x8000"`
 `I said "sure."` | `"I said \"sure.\""`
@@ -147,7 +148,7 @@ the column heading, where `𝑥` is the delimiter chosen.
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
-Tim | 19,14,18 | green blue
+Tim | 19, 14, 18 | green blue
 
 ```json
 [
@@ -175,7 +176,7 @@ Tim | 19, | green
 name | rooms[,] | colors[ ]
 --- | --- | ---
 Tim | 19 | green
- | 14,18, | blue
+ | 14, 18, | blue
 
 JSON strings are supported within lists, but they may not contain
 the delimiter used by the list. Lists are split on their delimiter
@@ -189,7 +190,7 @@ Ryan | "hi, there", "friend"
 [
   {
     "name": "Ryan",
-    "says": ["\"hi", " there\"", "friend"]
+    "says": ["\"hi", "there\"", "friend"]
   }
 ]
 ```
@@ -263,8 +264,8 @@ with forward slashes for all but the last level.
 
 name | data[,] | data/[,] | data//[,]
 --- | --- | --- | ---
-nested | 1 | 2,3 | 4
- | 5 | 6,7 |
+nested | 1 | 2, 3 | 4
+ | 5 | 6, 7 |
 
 ```json
 [
@@ -281,8 +282,8 @@ for lists containing only lists to help make nesting clearer.
 
 name | data[>] | data/[>] | data//[,]
 --- | --- | --- | ---
-lumpy | > | > | 1,2
- | | > | 3,4
+lumpy | > | > | 1, 2
+ | | > | 3, 4
 
 ```json
 [
@@ -297,10 +298,10 @@ This works for lists of lists at the top-level too.
 
 [>] | /[,]
 --- | ---
-> | 1,0,0,0
-> | 0,1,0,0
-> | 0,0,1,-1
-> | 0,0,0,1
+> | 1, 0, 0, 0
+> | 0, 1, 0, 0
+> | 0, 0, 1, -1
+> | 0, 0, 0, 1
 
 ```json
 [
@@ -320,10 +321,10 @@ empty list one level above.
 
 very[-] | very/listy[,]
 --- | ---
-- | do,re
-  | mi,fa
-- | so,la
-  | ti,do
+  | do, re, mi
+  | fa
+- | so, la
+  | ti, do
 
 ```json
 [
@@ -336,11 +337,12 @@ very[-] | very/listy[,]
 ]
 ```
 
-This works with the top-level list too.
+This works with the top-level list too. Adding an empty list at the
+first element isn't required but can look more consistent.
 
 [>] | listy[,]
 --- | ---
-> | how,are,things
+> | how, are, things
 > | fine
   | thanks
 
