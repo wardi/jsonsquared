@@ -12,7 +12,7 @@ Options:
   -d --list-delimiters=DELIMITERS  string of characters to use when splitting
                                    lists within the same cell: the first one
                                    not found in the list text will be used
-                                   [default: ",|;:/!-_"]
+                                   [default: ,|;:/!-_]
   -e --encoding=ENCODING           text encoding for CSV file
   -f --fold-max=FOLD_MAX           fold lists onto next row before exceeding
                                    FOLD_MAX characters in the same cell
@@ -26,7 +26,7 @@ Options:
 
 from docopt import docopt
 
-from json2.version import __version__
+from jsonsquared.version import __version__
 
 def parse_arguments():
     # docopt magic

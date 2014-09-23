@@ -20,12 +20,12 @@ setup(
     author='Ian Ward',
     author_email='ian@excess.org',
     url='https://github.com/wardi/json-squared',
-    packages=['json2'],
+    packages=['jsonsquared'],
     install_requires=install_requires,
-    test_suite='json2.tests',
+    test_suite='jsonsquared.tests',
     zip_safe=False,
     entry_points = """
         [console_scripts]
-        json2=json2.cli:main
+        json2=jsonsquared.cli:main
         """
     )
