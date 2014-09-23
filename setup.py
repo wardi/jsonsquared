@@ -15,15 +15,12 @@ if sys.version_info <= (3,):
 setup(
     name='json-squared',
     version='0.1',
-    description=
-        'Convert JSON to easily editable CSV/XLS'
+    description='Convert JSON to easily editable CSV/XLS',
     license='MIT',
     author='Ian Ward',
     author_email='ian@excess.org',
     url='https://github.com/wardi/json-squared',
-    packages=[
-        'json2',
-        ],
+    packages=['json2'],
     install_requires=install_requires,
     test_suite='json2.tests',
     zip_safe=False,
