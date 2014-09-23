@@ -26,6 +26,7 @@ setup(
     zip_safe=False,
     entry_points = """
         [console_scripts]
-        json2=jsonsquared.cli:main
+        json2=jsonsquared.json2:main
+        unjson2=jsonsquared.unjson2:main
         """
     )
