@@ -1,4 +1,4 @@
-"""json-squared command line interface
+"""JSON Squared command line interface
 
 Usage:
   json2 csv [INPUT_JSON [OUTPUT_CSV]] [-L] [-z] [-e ENCODING] [-f FOLD_MAX]
@@ -12,13 +12,13 @@ Options:
   -d --list-delimiters=DELIMITERS  string of characters to use when splitting
                                    lists within the same cell: the first one
                                    not found in the list text will be used
-                                   [default: ,|;:/!-_]
+                                   [default: ,|;:/!-+>_]
   -e --encoding=ENCODING           text encoding for CSV file
   -f --fold-max=FOLD_MAX           fold lists onto next row before exceeding
                                    FOLD_MAX characters in the same cell
                                    [default: 20]
   -h --help                        show this help text
-  -i --indent=INDENT               pretty-print JSON with using INDENT spaces
+  -i --indent=INDENT               pretty-print JSON using INDENT spaces
   -L --json-lines                  consume/produce JSON Lines (newline-delimited
                                    JSON) instead of plain JSON
   -z --gzip                        consume/produce gzipped JSON

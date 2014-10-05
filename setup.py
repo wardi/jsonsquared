@@ -13,7 +13,7 @@ if sys.version_info <= (3,):
     install_requires.append('simplejson')
 
 setup(
-    name='json-squared',
+    name='jsonsquared',
     version='0.1',
     description='Convert JSON to easily editable CSV/XLS',
     license='MIT',
