@@ -89,7 +89,7 @@ JSON value.
 Any CSV string that can be [parsed as a JSON number](docs/number.gif)
 will be represented as a number in JSON.
 
-CSV value | JSON value
+CSV string | JSON value
 --- | ---
 `42` | 42
 `0.0009` | 0.0009
