@@ -3,7 +3,7 @@
 # [JSON]²
 
 JSON Squared is a (planned) library for lossless conversion between
-[JSON](http://json.org) and CSV in a sparse
+[JSON](http://json.org) and CSV or Excel format in a sparse
 style convenient for editing.
 
 Many libraries exist for converting between JSON and CSV. This library
@@ -106,7 +106,7 @@ ignoring whitespace on the left and right, will
 have the quotes and surrounding whitespace removed then be
 [parsed as JSON strings](docs/string.gif).
 Double-quotes may be straight (`"`) left (`“`) or right (`”`)
-for spreadsheet-friendliness. Matching left and right quotes is not required.
+for Excel-friendliness. Matching left and right quotes is not required.
 
 Within the JSON string straight double quotes (`"`) and backslashes
 (`\`) must be backslash-escaped.
