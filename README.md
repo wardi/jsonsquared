@@ -78,6 +78,9 @@ CSV string | JSON value
 `true` | `true`
 `false` | `false`
 `{}` | `{}`
+`NaN` | `NaN` (non-strict mode)
+`Infinity` | `Infinity` (non-strict mode)
+`-Infinity` | `-Infinity` (non-strict mode)
 
 When these exact strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
@@ -354,7 +357,7 @@ first element isn't required but can look more consistent.
 
 ## Edge cases
 
-### Top-evel objects
+### Top-level objects
 
 We use period (`.`) as a prefix in the column heading to indicate keys of a
 top-level object.
