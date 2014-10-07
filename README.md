@@ -72,20 +72,22 @@ Converts to:
 CSV allows only string values. JSON Squared maintains JSON types
 in CSV files by reserving the following string values:
 
-CSV string | JSON value | strict mode JSON value
---- | --- | ---
-`null` | `null` | `null`
-`true` | `true` | `true`
-`false` | `false` | `false`
-`{}` | `{}` | `{}`
-`NaN` | `NaN` | (error)
-`Infinity` | `Infinity` | (error)
-`-Infinity` | `-Infinity` | (error)
+CSV string | JSON value
+--- | ---
+`null` | `null`
+`true` | `true`
+`false` | `false`
+`{}` | `{}`
+`NaN` | `NaN` \*
+`Infinity` | `Infinity` \*
+`-Infinity` | `-Infinity` \*
 
 When these exact strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
 they will be converted to their corresponding special
 JSON value.
+
+\* raises error in (non-default) strict JSON mode
 
 ### Numbers
 
