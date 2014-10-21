@@ -124,11 +124,11 @@ JSON strings are typically used for:
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
 
-### Special JSON strings
+### Extended JSON
 
 JSON is occasionally extended to cover IEEE floating point special values.
 These special values are represented as JSON strings with a
-backslash-space (`\ `) prefix. This prefix is otherwise an invalid
+backslash-whitespace (`\ `) prefix. This prefix is otherwise an invalid
 part of a JSON string.
 
 CSV string | JSON value
@@ -137,7 +137,7 @@ CSV string | JSON value
 `"\ Infinity"` | `Infinity` \*
 `"\ -Infinity"` | `-Infinity` \*
 
-\* raises error in (non-default) strict JSON mode
+\* raises error if the "allow NaN" option is not enabled
 
 ### Normal strings
 
