@@ -128,7 +128,7 @@ JSON strings are typically used for:
 
 JSON is occasionally extended to cover IEEE floating point special values.
 These special values are represented as JSON strings with a
-backslash-space (`\ `) prefix. This prefix is otherwise an invalid
+backslash-space (`\ `) prefix. This prefix is otherwise an invalid
 part of a JSON string.
 
 CSV string | JSON value
