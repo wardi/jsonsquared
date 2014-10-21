@@ -78,16 +78,11 @@ CSV string | JSON value
 `true` | `true`
 `false` | `false`
 `{}` | `{}`
-`NaN` | `NaN` \*
-`Infinity` | `Infinity` \*
-`-Infinity` | `-Infinity` \*
 
 When these exact strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
 they will be converted to their corresponding special
 JSON value.
-
-\* raises error in (non-default) strict JSON mode
 
 ### Numbers
 
@@ -128,6 +123,21 @@ JSON strings are typically used for:
 * strings that have significant leading or trailing whitespace
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
+
+### Special JSON strings
+
+JSON is occasionally extended to cover IEEE floating point special values.
+These special values are represented as JSON strings with a
+backslash-space (`\ `) prefix. This prefix is otherwise an invalid
+part of a JSON string.
+
+CSV string | JSON value
+--- | ---
+`"\ NaN"` | `NaN` \*
+`"\ Infinity"` | `Infinity` \*
+`"\ -Infinity"` | `-Infinity` \*
+
+\* raises error in (non-default) strict JSON mode
 
 ### Normal strings
 
