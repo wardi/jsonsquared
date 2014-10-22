@@ -404,9 +404,9 @@ pretty boring JSON |
 
 Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
-opening brackets (`[`) can given as JSON strings.
+opening brackets (`[`) can be given as JSON strings.
 
-odd."" | "\u005B\u002C]" | "\u002F"/"\u002E\u002E"
+odd."" | "\u005B,]" | "\u002F"/"\u002E\u002E"
 --- | --- | ---
 1 | 2 | 3
 
@@ -422,7 +422,8 @@ odd."" | "\u005B\u002C]" | "\u002F"/"\u002E\u002E"
 ]
 ```
 
-You must use the Unicode-escaped versions of the special characters
+You must use the Unicode-escaped versions of characters with a
+special meaning in JSON Squared column names
 or your keys will be interpreted incorrectly. For reference:
 
 Original | JSON Escaped
