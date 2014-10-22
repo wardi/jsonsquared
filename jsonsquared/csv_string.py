@@ -31,7 +31,8 @@ def decode(s, allow_nan=False):
     :returns: a single JSON value: unicode, decimal, None, True, False
         or {}, and when allow_nan float('inf'), -float('inf') or float('nan')
 
-    :raises: ParseError on invalid JSON string-formatted input
+    :raises: ParseError on invalid JSON string-formatted input,
+        ValueError on empty/whitespace-only string passed
     """
     s = unicode(s).rstrip()
     first_len = len(s)
@@ -94,7 +95,7 @@ def decode(s, allow_nan=False):
         bad_part = bad_part[:10] + '...'
     raise ParseFailure(
         'JSON String parsing failed at position {0}: {1}'.format(
-            bad_index, json.dumps(bad_part))
+            bad_index, json.dumps(bad_part)))
 
 
 
@@ -117,4 +118,17 @@ def decode_list(s, list_delimiter, allow_nan=False):
     if s.strip() == list_delimiter:
         return []
 
-    return [decode(part, allow_nan) for part in s.split(list_delimiter)]
+    elements = s.split(list_delimiter)
+    if len(elements) > 1 and not has_value(elements[-1]):
+        del elements[-1]
+
+    errors = []
+    out = []
+    for i, e in enumerate(elements):
+        try:
+            out.append(decode(e, allow_nan))
+        except ParseError as err:
+            errors.append((i, err))
+
+    if errors:
+        pass
