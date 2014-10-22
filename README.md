@@ -79,10 +79,15 @@ CSV string | JSON value
 `false` | `false`
 `{}` | `{}`
 
-When these exact strings appear as the value
+When these strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
 they will be converted to their corresponding special
 JSON value.
+
+All letters must be lower-case and no
+characters are permitted between the braces for the
+empty object, or the value will be treated as a
+[normal string](#normal-strings).
 
 ### Numbers
 
@@ -95,16 +100,20 @@ CSV string | JSON value
 `0.0009` | 0.0009
 `-1.96e-20` | -1.96e-20
 
-JSON Squared will leave numbers exactly as
-they appear and not introduce any underflow, overflow or rounding
+Commas, whitespace and other separators are not permitted anywhere
+within these numbers, or the value will be treated as a
+[normal string](#normal-strings).
+
+JSON Squared will maintain the precision of the numbers given
+and not introduce any underflow, overflow or rounding
 errors during conversions.
 
 ### JSON strings
 
 CSV strings that have double-quotes as their first and last characters,
-ignoring whitespace on the left and right, will
-have the quotes and surrounding whitespace removed then be
+ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif).
+
 Double-quotes may be straight (`"`) left (`“`) or right (`”`)
 for Excel-friendliness. Matching left and right quotes is not required.
 
