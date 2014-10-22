@@ -7,6 +7,7 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+from decimal import Decimal
 
 class TestHasValue(unittest.TestCase):
     def test_has_value(self):
@@ -30,7 +31,7 @@ class TestDecode(unittest.TestCase):
         self.assertEquals(decode('true '), True)
 
     def test_false(self):
-        self.assertEquals(decode(' false'), False)
+        self.assertEquals(decode('\N{NO-BREAK SPACE} false'), False)
 
     def test_empty_object(self):
         self.assertEquals(decode(' {} '), {})
@@ -44,4 +45,17 @@ class TestDecode(unittest.TestCase):
     def test_false_is_case_sensitive(self):
         self.assertEquals(decode('falsE'), 'falsE')
 
+    def test_empty_object_no_internal_whitespace_allowed(self):
+        self.assertEquals(decode(' { } '), '{ }')
 
+    def test_natural_number(self):
+        self.assertEquals(decode('42'), Decimal('42'))
+
+    def test_negative_integer(self):
+        self.assertEquals(decode('-9'), Decimal('-9'))
+
+    def test_decimal_number(self):
+        self.assertEquals(decode('0.0009'), Decimal('0.0009'))
+
+    def test_exponent_number(self):
+        self.assertEquals(decode(-1.96e-20), Decimal('-1.96e-20'))
