@@ -457,12 +457,11 @@ id | foo | foo[,] | foo.bar | foo/baz
 ```
 
 Within a list we can switch between objects types on different rows while
-we build the list. This is the only way to include empty objects (`{}`)
-in lists along with non-empty objects.
+we build the list.
 
 collection | things[,] | things/id | things/name
 --- | --- | --- | ---
-heap | 19,{} | C=64 |
+heap | 19 | C=64 |
  | | 1541 | disk drive
  | false | |
 
@@ -472,7 +471,6 @@ heap | 19,{} | C=64 |
     "collection": "heap",
     "things": [
       19,
-      {},
       {"id": "C=64"},
       {"id": 1541, "name": "disk drive"},
       false
@@ -481,3 +479,27 @@ heap | 19,{} | C=64 |
 ]
 ```
 
+### Empty objects
+
+Empty objects that appear in lists with normal objects must be included
+as simple types.
+
+messages[,] | messages/text
+--- | ---
+ | hello
+{} | is there anyone there?
+ | no, we're not here right now.
+
+```json
+[
+  {
+    "messages": [
+      {"text": "hello"},
+      {},
+      {"text": "is there anyone there?"},
+      {"text": "no we're not here right now"}
+    ]
+  }
+]
+
+```
