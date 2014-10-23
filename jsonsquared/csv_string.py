@@ -4,6 +4,11 @@ from __future__ import unicode_literals
 from decimal import Decimal
 import re
 
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 from jsonsquared.errors import ParseFailure
 
 
@@ -85,6 +90,11 @@ def decode(s, allow_nan=False):
     # straight quotes for JSON parsing
     s = '"' + inner + '"'
     if re.match(JSON_STRING_RE, s):
+        if str is bytes:
+            # XXX: encoding because json in python 2 returns separate
+            # surrogate pairs when passed a unicode object including
+            # escaped surrogates
+            return json.loads(s.encode('utf-8'))
         return json.loads(s)
 
     # build a human-friendly error message

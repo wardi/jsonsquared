@@ -58,4 +58,14 @@ class TestDecode(unittest.TestCase):
         self.assertEquals(decode('0.0009'), Decimal('0.0009'))
 
     def test_exponent_number(self):
-        self.assertEquals(decode(-1.96e-20), Decimal('-1.96e-20'))
+        self.assertEquals(decode('-1.96e-20'), Decimal('-1.96e-20'))
+
+    def test_plenty_of_precision(self):
+        self.assertEquals(unicode(decode('6.' + '0' * 100 + '42')),
+            '6.' + '0' * 100 + '42')
+
+    def test_json_string_surrogate_pairs(self):
+        self.assertEquals(decode(r'"\ud83d\udca9"'), '\U0001f4a9')
+
+    def test_json_string_significant_whitespace(self):
+        self.assertEquals(decode('"  hello "'), '  hello ')
