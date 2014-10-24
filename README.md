@@ -72,12 +72,20 @@ Converts to:
 CSV allows only string values. JSON Squared maintains JSON types
 in CSV files by reserving the following string values:
 
-CSV string | JSON value
---- | ---
-`null` | `null`
-`true` | `true`
-`false` | `false`
-`{}` | `{}`
+a | b | c | d
+--- | --- | --- | ---
+null | true | false | {}
+
+```json
+[
+  {
+    "a": null,
+    "b": true,
+    "c": false,
+    "d": {}
+  }
+]
+```
 
 When these strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
@@ -94,11 +102,18 @@ empty object, or the value will be treated as a
 Any CSV string that can be [parsed as a JSON number](docs/number.gif)
 will be represented as a number in JSON.
 
-CSV string | JSON value
---- | ---
-`42` | 42
-`0.0009` | 0.0009
-`-1.96e-20` | -1.96e-20
+alpha | beta | gamma
+--- | --- | ---
+42 | 0.0009 | -1.96e-20
+
+```json
+[
+  {
+    "alpha": 42,
+    "beta": 0.0009,
+    "gamma": -1.96e-20
+  }
+]
 
 Commas, whitespace and other separators are not permitted anywhere
 within these numbers, or the value will be treated as a
@@ -128,12 +143,20 @@ the JSON newline escape sequence (`\n`) before being parsed as JSON strings.
 Within the JSON string straight double quotes (`"`) and backslashes
 (`\`) must be backslash-escaped.
 
-CSV string | JSON value
---- | ---
-`   "what's that?"` | `"what's that?"`
-`“she said \"hi\".“` | `"she said \"hi\"."`
-`"I need a`<br/>`few`<br/>`lines`<br/>`"` | `"I need a\nfew\nlines"`
-`"just \`<br/>`formatting"` | `"just formatting"`
+fee | fi | fo | fum
+--- | --- | --- | ---
+"   what's that?" | “she said \"hi\".“ | "I need a<br/>few<br/>lines<br/>" | "just \<br/>formatting"
+
+```json
+[
+  {
+    "fee": "   what's that?",
+    "fi": "she said \"hi\".",
+    "fo": "I need a\nfew\nlines",
+    "fum": "just formatting"
+  }
+]
+```
 
 JSON strings are typically used for:
 
