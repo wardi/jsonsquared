@@ -12,6 +12,8 @@ except ImportError:
 from jsonsquared.errors import ParseFailure
 
 
+ERROR_SNIPPET_LENGTH = 10
+
 JSON_STRING_RE = r'"(?:[^"\\]|\\["\\/bfnrt]|\\u[0-9a-fA-F]{4})*"$'
 JSON_STRING_PARTIAL_RE = JSON_STRING_RE[:-2]
 JSON_NUMBER_RE = r'-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?$'
@@ -31,10 +33,11 @@ def decode(s, allow_nan=False):
     as a string in a CSV or spreadsheet.
 
     :param s: unicode CSV string
-    :param allow_nan: True to allow IEEE float +/-inf and NaN
+    :param allow_nan: True to allow IEEE floating point +/-inf and NaN
 
-    :returns: a single JSON value: unicode, decimal, None, True, False
-        or {}, and when allow_nan float('inf'), -float('inf') or float('nan')
+    :returns: a single JSON value: unicode, Decimal, None, True, False
+        or {}; when allow_nan is True Decimal values may include values
+        'Infinity', '-Infinity' and 'NaN'.
 
     :raises: ParseError on invalid JSON string-formatted input,
         ValueError on empty/whitespace-only string passed
@@ -72,17 +75,17 @@ def decode(s, allow_nan=False):
             if not allow_nan:
                 raise ParseFailure(
                     'Strict JSON parsing does not allow NaN values')
-            return float('nan')
+            return Decimal('NaN')
         if e == 'Infinity':
             if not allow_nan:
                 raise ParseFailure(
                     'Strict JSON parsing does not allow Infinity values')
-            return float('inf')
+            return Decimal('Infinity')
         if e == '-Infinity':
             if not allow_nan:
                 raise ParseFailure(
                     'Strict JSON parsing does not allow -Infinity values')
-            return -float('inf')
+            return Decimal('-Infinity')
         raise ParseFailure(
             'Extended JSON not recognised: {0}. Allowed values are '
             '"NaN", "Infinity" and "-Infinity"'.format(json.dumps(e)))
@@ -91,7 +94,7 @@ def decode(s, allow_nan=False):
     s = '"' + inner + '"'
     if re.match(JSON_STRING_RE, s):
         if str is bytes:
-            # XXX: encoding because json in python 2 returns separate
+            # XXX: encoding because json in python <2.7.8 returns separate
             # surrogate pairs when passed a unicode object including
             # escaped surrogates
             return json.loads(s.encode('utf-8'))
@@ -100,9 +103,9 @@ def decode(s, allow_nan=False):
     # build a human-friendly error message
     m = re.match(JSON_STRING_PARTIAL_RE, s)
     bad_index = m.end() + left_stripped
-    bad_part = s[bad_index:bad_index + 11]
-    if len(bad_part) > 10:
-        bad_part = bad_part[:10] + '...'
+    bad_part = s[bad_index:bad_index + ERROR_SNIPPET_LENGTH + 1]
+    if len(bad_part) > ERROR_SNIPPET_LENGTH:
+        bad_part = bad_part[:ERROR_SNIPPET_LENGTH] + '...'
     raise ParseFailure(
         'JSON String parsing failed at position {0}: {1}'.format(
             bad_index, json.dumps(bad_part)))

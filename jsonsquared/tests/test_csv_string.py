@@ -64,8 +64,26 @@ class TestDecode(unittest.TestCase):
         self.assertEquals(unicode(decode('6.' + '0' * 100 + '42')),
             '6.' + '0' * 100 + '42')
 
-    def test_json_string_surrogate_pairs(self):
+    def test_string_single_quote(self):
+        self.assertEquals(decode('"'), '"')
+
+    def test_string_unicode(self):
+        self.assertEquals(decode('\N{SNOWMAN}'), '\N{SNOWMAN}')
+
+    def test_json_string_unicode(self):
+        self.assertEquals(decode('"\N{SNOWMAN}"'), '\N{SNOWMAN}')
+
+    def test_json_string_high_unicode(self):
+        self.assertEquals(decode('"\U0001f4a9"'), '\U0001f4a9')
+
+    def test_json_string_escaped_surrogate_pairs(self):
         self.assertEquals(decode(r'"\ud83d\udca9"'), '\U0001f4a9')
 
     def test_json_string_significant_whitespace(self):
         self.assertEquals(decode('"  hello "'), '  hello ')
+
+    def test_json_string_right_quotes(self):
+        self.assertEquals(decode('\N{RIGHT DOUBLE QUOTATION MARK} o "'), ' o ')
+
+    def test_json_string_left_quotes(self):
+        self.assertEquals(decode('" y \N{LEFT DOUBLE QUOTATION MARK}'), ' y ')
