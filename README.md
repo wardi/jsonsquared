@@ -132,6 +132,8 @@ CSV string | JSON value
 --- | ---
 `   "what's that?"` | `"what's that?"`
 `“she said \"hi\".“` | `"she said \"hi\"."`
+`"I need a`<br/>`few`<br/>`lines`<br/>`"` | `"I need a\nfew\nlines"`
+`"just \`<br/>`formatting"` | `"just formatting"`
 
 JSON strings are typically used for:
 
