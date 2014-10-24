@@ -144,17 +144,17 @@ the JSON newline escape sequence (`\n`) before being parsed as JSON strings.
 Within the JSON string straight double quotes (`"`) and backslashes
 (`\`) must be backslash-escaped.
 
-fee | fi | fo | fum
+one | two | three | four
 --- | --- | --- | ---
 "   what's that?" | “she said \"hi\".“ | "I need a<br/>few<br/>lines<br/>" | "just \ <br/>formatting"
 
 ```json
 [
   {
-    "fee": "   what's that?",
-    "fi": "she said \"hi\".",
-    "fo": "I need a\nfew\nlines\n",
-    "fum": "just formatting"
+    "one": "   what's that?",
+    "two": "she said \"hi\".",
+    "three": "I need a\nfew\nlines\n",
+    "four": "just formatting"
   }
 ]
 ```
