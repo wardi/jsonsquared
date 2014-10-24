@@ -114,6 +114,7 @@ alpha | beta | gamma
     "gamma": -1.96e-20
   }
 ]
+```
 
 Commas, whitespace and other separators are not permitted anywhere
 within these numbers, or the value will be treated as a
