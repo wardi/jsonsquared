@@ -146,14 +146,14 @@ Within the JSON string straight double quotes (`"`) and backslashes
 
 fee | fi | fo | fum
 --- | --- | --- | ---
-"   what's that?" | “she said \"hi\".“ | "I need a<br/>few<br/>lines<br/>" | "just \<br/>formatting"
+"   what's that?" | “she said \"hi\".“ | "I need a<br/>few<br/>lines<br/>" | "just \ <br/>formatting"
 
 ```json
 [
   {
     "fee": "   what's that?",
     "fi": "she said \"hi\".",
-    "fo": "I need a\nfew\nlines",
+    "fo": "I need a\nfew\nlines\n",
     "fum": "just formatting"
   }
 ]
