@@ -114,8 +114,16 @@ CSV strings that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif).
 
-Double-quotes may be straight (`"`) left (`“`) or right (`”`)
-for Excel-friendliness. Matching left and right quotes is not required.
+Some allowances are made for Excel-friendliness and ease of editing.
+The surrounding double-quotes
+may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
+and right quotes is not required. Real newlines may also be embedded in the
+string.
+
+Surrounding quotes will be converted to straight quotes,
+carriage returns will be removed, backslash-newline sequences will be
+removed and other newlines will be converted to
+the JSON newline escape sequence (`\n`) before being parsed as JSON strings.
 
 Within the JSON string straight double quotes (`"`) and backslashes
 (`\`) must be backslash-escaped.
