@@ -149,7 +149,8 @@ format is less error-prone:
   Straight double-quotes in the string body that are not already escaped
   by a backslash will be escaped automatically before parsing.
 
-* Real newline characters may be included in the string body.
+* Real newline characters may be included in the string body. Newlines
+  for just for formatting in the spreadsheet may be backslash-escaped.
 
   Carriage return values will be removed, then newlines
   preceded by a backslash will be removed. Remaining newlines will be
@@ -183,7 +184,7 @@ document from being converted to JSON:
 
 greeting |
 --- |
-just \saying hi |
+"just \saying hi" |
 
 ```
 Error parsing cell A2: JSON String parsing failed at position 5: "\saying hi"
