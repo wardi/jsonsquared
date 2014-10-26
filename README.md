@@ -126,7 +126,7 @@ errors during conversions.
 
 ### JSON strings
 
-cell values that have double-quotes as their first and last characters,
+Cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif).
 
@@ -141,15 +141,15 @@ format is less error-prone:
   parsing. Left and right quotes will not be replaced within the string
   body.
 
-* Straight quotes (`"`) within the string body *do not* need to
+* Straight double-quotes (`"`) within the string body *do not* need to
   be escaped with a backslash. This means means that backslash (`\`) is
   the only character that needs escaping when converting a
   [normal string](#normal-strings) to a JSON string.
 
-  Straight quotes in the string body *not* preceded by a backslash
-  will be escaped automatically before parsing.
+  Straight double-quotes in the string body that are not already escaped
+  by a backslash will be escaped automatically before parsing.
 
-* Real newlines characters may be included in the string body.
+* Real newline characters may be included in the string body.
 
   Carriage return values will be removed, then newlines
   preceded by a backslash will be removed. Remaining newlines will be
@@ -157,7 +157,7 @@ format is less error-prone:
 
 a | b | c | d
 --- | --- | --- | ---
-"   what's that?" | “she said \"hi\".“ | "two<br/>lines" | "one \ <br/>line"
+"   what's that?" | “she said "hi".“ | "two<br/>lines" | "one \ <br/>line"
 
 ```json
 [
