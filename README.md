@@ -26,7 +26,7 @@ Limitations:
 
 ## Example
 
-address | owners[,] | pets/name | pets/dob | pets/toys[,]
+address | owners[,] | pets/name | pets/joined | pets/toys[,]
 --- | --- | --- | --- | ---
 12 Oak ave. | Tim K. | Fluffy | 2009 | pink elephant, green ball
  | | Beast | 2011 |
@@ -44,9 +44,9 @@ Converts to:
     "address": "12 Oak ave.",
     "owners": ["Tim K."],
     "pets": [
-      { "name": "Fluffy", "dob": 2009, "toys": ["pink elephant", "green ball"] },
-      { "name": "Beast", "dob": 2011 },
-      { "name": "Tiny", "dob": 2005, "toys": ["orange platypus"] }
+      { "name": "Fluffy", "joined": 2009, "toys": ["pink elephant", "green ball"] },
+      { "name": "Beast", "joined": 2011 },
+      { "name": "Tiny", "joined": 2005, "toys": ["orange platypus"] }
     ]
   },
   {
@@ -55,10 +55,10 @@ Converts to:
     "pets": [
       {
         "name": "Sophie",
-        "dob": 2009,
+        "joined": 2009,
         "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"]
       },
-      { "name": "Theo", "dob": 2009 }
+      { "name": "Theo", "joined": 2009 }
     ]
   }
 ]
