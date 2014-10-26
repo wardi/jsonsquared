@@ -178,7 +178,7 @@ a | b | c
 --- | --- | ---
 "\ NaN" | "\ Infinity" | "\ -Infinity"
 
-```json
+```js
 [
   {
     "a": NaN,
