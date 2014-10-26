@@ -191,11 +191,12 @@ a | b | c
 ### Normal strings
 
 Any other value is treated as a normal string value. Leading and trailing
-whitespace is removed.
+whitespace is removed. There is no escaping or special handling or
+escaping required for any characters.
 
-a | b | c | d
---- | --- | --- | ---
-   what's that? | True | 0x8000 | I said "sure."
+a | b | c | d | e
+--- | --- | --- | --- | ---
+      what's that? | True | 0x8000 | I said "sure." | c:\sys\net.txt
 
 ```json
 [
@@ -203,7 +204,8 @@ a | b | c | d
     "a": "what's that?",
     "b": "True",
     "c": "0x8000",
-    "d": "I said \"sure\""
+    "d": "I said \"sure\"",
+    "e": "c:\\sys\\net.txt"
   }
 ]
 ```
