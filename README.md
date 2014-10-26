@@ -102,16 +102,16 @@ empty object, or the value will be treated as a
 Any CSV string that can be [parsed as a JSON number](docs/number.gif)
 will be represented as a number in JSON.
 
-alpha | beta | gamma
+a | b | c
 --- | --- | ---
 42 | 0.0009 | -1.96e-20
 
 ```json
 [
   {
-    "alpha": 42,
-    "beta": 0.0009,
-    "gamma": -1.96e-20
+    "a": 42,
+    "b": 0.0009,
+    "c": -1.96e-20
   }
 ]
 ```
@@ -144,17 +144,17 @@ the JSON newline escape sequence (`\n`) before being parsed as JSON strings.
 Within the JSON string straight double quotes (`"`) and backslashes
 (`\`) must be backslash-escaped.
 
-one | two | three | four
+a | b | c | d
 --- | --- | --- | ---
-"   what's that?" | “she said \"hi\".“ | "I need a<br/>few<br/>lines<br/>" | "just \ <br/>formatting"
+"   what's that?" | “she said \"hi\".“ | "two<br/>lines" | "one \ <br/>line"
 
 ```json
 [
   {
-    "one": "   what's that?",
-    "two": "she said \"hi\".",
-    "three": "I need a\nfew\nlines\n",
-    "four": "just formatting"
+    "a": "   what's that?",
+    "b": "she said \"hi\".",
+    "c": "two\nlines",
+    "d": "one line"
   }
 ]
 ```
@@ -174,25 +174,39 @@ These special values are represented as JSON strings with a
 backslash-whitespace (`\ `) prefix. This prefix is otherwise an invalid
 part of a JSON string.
 
-CSV string | JSON value
---- | ---
-`"\ NaN"` | `NaN` \*
-`"\ Infinity"` | `Infinity` \*
-`"\ -Infinity"` | `-Infinity` \*
+a | b | c
+--- | --- | ---
+"\ NaN" | "\ Infinity" | "\ -Infinity"
 
-\* raises error if the "allow NaN" option is not enabled
+```json
+[
+  {
+    "a": NaN,
+    "b": Infinity,
+    "c": -Infinity
+  }
+]
+```
 
 ### Normal strings
 
 Any other value is treated as a normal string value. Leading and trailing
 whitespace is removed.
 
-CSV string | JSON value
---- | ---
-`   what's that?` | `"what's that?"`
-`True` | `"True"`
-`0x8000` | `"0x8000"`
-`I said "sure."` | `"I said \"sure.\""`
+a | b | c | d
+--- | --- | --- | ---
+   what's that? | True | 0x8000 | I said "sure."
+
+```json
+[
+  {
+    "a": "what's that?",
+    "b": "True",
+    "c": "0x8000",
+    "d": "I said \"sure\""
+  }
+]
+```
 
 ## Compound types
 
