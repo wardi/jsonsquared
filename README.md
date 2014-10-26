@@ -15,14 +15,15 @@ Features:
 
 * Compact table format even with multiple nested lists of objects
 * JSON types are maintained
-* Not limited to data files that fit in RAM, can stream data or use
-  disk space temporarily for conversions
+* Not limited to data files that fit in RAM, can stream data
+  (CSV to JSON) use two-pass method (JSON files to CSV) or use
+  intermediate temp file (JSON stream to CSV)
 * Simple, clear error reporting for parsing errors
 
 Limitations:
 
-* JSON files with repeated keys or with keys in a special order are
-  not supported
+* JSON files including objects with repeated keys or with
+  specially ordered keys are not supported
 
 ## Example
 
@@ -179,8 +180,12 @@ JSON strings are typically used for:
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
 
-JSON strings can cause parsing errors that will prevent a CSV or excel
-document from being converted to JSON:
+JSON strings with invalid backslash escape sequences or control
+characters can cause parsing errors that will prevent a CSV document
+from being converted to JSON.
+
+All errors are collected and reported with a clear reference to the
+position of the invalid characters:
 
 greeting |
 --- |
