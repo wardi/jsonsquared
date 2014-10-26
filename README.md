@@ -99,7 +99,7 @@ empty object, or the value will be treated as a
 
 ### Numbers
 
-Any CSV string that can be [parsed as a JSON number](docs/number.gif)
+Any cell value that can be [parsed as a JSON number](docs/number.gif)
 will be represented as a number in JSON.
 
 a | b | c
@@ -126,23 +126,34 @@ errors during conversions.
 
 ### JSON strings
 
-CSV strings that have double-quotes as their first and last characters,
+cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif).
 
-Some allowances are made for Excel-friendliness and ease of editing.
-The surrounding double-quotes
-may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
-and right quotes is not required. Real newlines may also be embedded in the
-string.
+JSON Squared makes a number of allowances so that working with this
+format is less error-prone:
 
-Surrounding quotes will be converted to straight quotes,
-carriage returns will be removed, backslash-newline sequences will be
-removed and other newlines will be converted to
-the JSON newline escape sequence (`\n`) before being parsed as JSON strings.
+* For Excel smart-quote-friendliness the surrounding double-quotes
+  may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
+  and right quotes is not required.
 
-Within the JSON string straight double quotes (`"`) and backslashes
-(`\`) must be backslash-escaped.
+  The surrounding quotes will be converted to straight quotes before
+  parsing. Left and right quotes will not be replaced within the string
+  body.
+
+* Straight quotes (`"`) within the string body *do not* need to
+  be escaped with a backslash. This means means that backslash (`\`) is
+  the only character that needs escaping when converting a
+  [normal string](#normal-strings) to a JSON string.
+
+  Straight quotes in the string body *not* preceded by a backslash
+  will be escaped automatically before parsing.
+
+* Real newlines characters may be included in the string body.
+
+  Carriage return values will be removed, then newlines
+  preceded by a backslash will be removed. Remaining newlines will be
+  replaced with the newline escape sequence (`\n`) before being parsed.
 
 a | b | c | d
 --- | --- | --- | ---
@@ -166,6 +177,17 @@ JSON strings are typically used for:
 * strings that have significant leading or trailing whitespace
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
+
+JSON strings can cause parsing errors that will prevent a CSV or excel
+document from being converted to JSON:
+
+greeting |
+--- |
+just \saying hi |
+
+```
+Error parsing cell A2: JSON String parsing failed at position 5: "\saying hi"
+```
 
 ### Extended JSON
 
