@@ -93,10 +93,9 @@ of a CSV cell, ignoring whitespace on the left and right,
 they will be converted to their corresponding special
 JSON value.
 
-All letters must be lower-case and no
+All letters must be lower-case. No
 characters are permitted between the braces for the
-empty object, or the value will be treated as a
-[normal string](#normal-strings).
+empty object.
 
 ### Numbers
 
@@ -131,10 +130,10 @@ Cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif).
 
-JSON Squared makes a number of allowances so that working with this
-format is less error-prone:
+JSON Squared makes a number of allowances so that working with
+JSON strings more convenient and less error-prone:
 
-* For Excel smart-quote-friendliness the surrounding double-quotes
+* For Excel-smart-quote-friendliness the surrounding double-quotes
   may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
   and right quotes is not required.
 
@@ -153,9 +152,10 @@ format is less error-prone:
 * Real newline characters may be included in the string body. Newlines
   for just for formatting in the spreadsheet may be backslash-escaped.
 
-  Carriage return values will be removed, then newlines
-  preceded by a backslash will be removed. Remaining newlines will be
-  replaced with the newline escape sequence (`\n`) before being parsed.
+  Real carriage return characters (U+000D) will be removed. Next, real
+  newline characters (U+000A) preceded by a backslash will be removed.
+  Finally any remaining real newline characters will be
+  replaced with the newline escape sequence (`\n`) before parsing.
 
 a | b | c | d
 --- | --- | --- | ---
