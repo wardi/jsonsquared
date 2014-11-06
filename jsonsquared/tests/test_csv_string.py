@@ -87,3 +87,16 @@ class TestDecode(unittest.TestCase):
 
     def test_json_string_left_quotes(self):
         self.assertEquals(decode('" y \N{LEFT DOUBLE QUOTATION MARK}'), ' y ')
+
+    def test_json_string_auto_escape_double_quotes(self):
+        self.assertEquals(decode('"""'),'"')
+
+    def test_json_string_escaped_backslash(self):
+        self.assertEquals(decode(r'"\\"'), '\\')
+
+    def test_json_string_allow_escaped_double_quotes(self):
+        self.assertEquals(decode(r'"\""'), '"')
+
+    def test_json_string_auto_escape_double_quotes_leading_backslash(self):
+        self.assertEquals(decode(r'"\\""'), r'\"')
+

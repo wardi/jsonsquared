@@ -14,7 +14,10 @@ from jsonsquared.errors import ParseFailure
 
 ERROR_SNIPPET_LENGTH = 10
 
-JSON_STRING_RE = r'"(?:[^"\\]|\\["\\/bfnrt]|\\u[0-9a-fA-F]{4})*"$'
+JSON_STRING_RE = (
+    r'"(?:[^"\\]|\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}|'
+    r'(\\[^\S\n]*\n|\r|\n|")' # this part is a JSON squared extension
+    r')*"$')
 JSON_STRING_PARTIAL_RE = JSON_STRING_RE[:-2]
 JSON_NUMBER_RE = r'-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?$'
 
@@ -92,7 +95,9 @@ def decode(s, allow_nan=False):
 
     # straight quotes for JSON parsing
     s = '"' + inner + '"'
-    if re.match(JSON_STRING_RE, s):
+    m = re.match(JSON_STRING_RE, s)
+    if m:
+        s = _expand_json_string_extensions(s, m)
         if str is bytes:
             # XXX: encoding because json in python <2.7.8 returns separate
             # surrogate pairs when passed a unicode object including
@@ -103,12 +108,39 @@ def decode(s, allow_nan=False):
     # build a human-friendly error message
     m = re.match(JSON_STRING_PARTIAL_RE, s)
     bad_index = m.end() + left_stripped
-    bad_part = s[bad_index:bad_index + ERROR_SNIPPET_LENGTH + 1]
+    bad_part = s[:-1][bad_index:bad_index + ERROR_SNIPPET_LENGTH + 1]
     if len(bad_part) > ERROR_SNIPPET_LENGTH:
         bad_part = bad_part[:ERROR_SNIPPET_LENGTH] + '...'
     raise ParseFailure(
         'JSON String parsing failed at position {0}: {1}'.format(
-            bad_index, json.dumps(bad_part)))
+            bad_index, bad_part))
+
+
+def _expand_json_string_extensions(s, m):
+    """
+    implementation of our json strings lenient extensions:
+    1. remove backslash-prefixed real-newlines
+    2. replace real newlines with backslash-n
+    3. remove real carriage returns
+    4. backslash-escape unescaped double-quotes
+    """
+    i = 1
+    last = 0
+    out = []
+    # regex match objects are weird
+    while i <= m.lastindex:
+        start, end = m.span(i)
+        if start > last:
+            out.append(s[last:start])
+        group = m.group(i)
+        if group == '\n':
+            out.append(r'\n')
+        elif group == '"':
+            out.append(r'\"')
+        last = end
+        i += 1
+    out.append(s[last:])
+    return ''.join(out)
 
 
 
