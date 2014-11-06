@@ -100,3 +100,12 @@ class TestDecode(unittest.TestCase):
     def test_json_string_auto_escape_double_quotes_leading_backslash(self):
         self.assertEquals(decode(r'"\\""'), r'\"')
 
+    def test_json_string_with_embedded_newline(self):
+        self.assertEquals(decode('"hello\nworld"'), 'hello\nworld')
+
+    def test_json_string_with_escaped_embedded_newline(self):
+        self.assertEquals(decode('"hello\\\nworld"'), 'helloworld')
+
+    def test_json_string_with_escaped_embedded_whitespace_newline(self):
+        self.assertEquals(decode('"hello\\ \r\nworld"'), 'helloworld')
+

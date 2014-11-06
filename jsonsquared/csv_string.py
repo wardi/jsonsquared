@@ -14,8 +14,9 @@ from jsonsquared.errors import ParseFailure
 
 ERROR_SNIPPET_LENGTH = 10
 
+CONTROL_CHARACTERS = ''.join(unichr(x) for x in range(32))
 JSON_STRING_RE = (
-    r'"(?:[^"\\]|\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}|'
+    r'"(?:[^"\\' + CONTROL_CHARACTERS + r']|\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}|'
     r'(\\[^\S\n]*\n|\r|\n|")' # this part is a JSON squared extension
     r')*"$')
 JSON_STRING_PARTIAL_RE = JSON_STRING_RE[:-2]
@@ -124,6 +125,8 @@ def _expand_json_string_extensions(s, m):
     3. remove real carriage returns
     4. backslash-escape unescaped double-quotes
     """
+    if not m.lastindex:
+        return s
     i = 1
     last = 0
     out = []
