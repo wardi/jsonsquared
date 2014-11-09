@@ -2,7 +2,7 @@
 
 # [JSON]²
 
-JSON Squared is a (planned) library for lossless conversion between
+JSON Squared is a tool being developed for lossless conversion between
 [JSON](http://json.org) and CSV or Excel format in a sparse
 style convenient for editing.
 
@@ -220,8 +220,7 @@ a | b | c
 ### Normal strings
 
 Any other value is treated as a normal string value. Leading and trailing
-whitespace is removed. There is no escaping or special handling or
-escaping required for any characters.
+whitespace is removed. There is no escaping required for any characters.
 
 a | b | c | d | e
 --- | --- | --- | --- | ---
