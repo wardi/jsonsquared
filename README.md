@@ -22,8 +22,10 @@ Features:
 
 Limitations:
 
-* JSON files including objects with repeated keys or with
-  specially ordered keys are not supported
+* Repeating keys within the same JSON object is not supported,
+  e.g. `{"data": 1, "data": 42, "data": 83}`
+* JSON objects in files produced will always have their keys in
+  the same order, e.g. `[{"a": 1, "b": 2}, {"a": 2, "b": 1}, ...]`
 
 ## Example
 
