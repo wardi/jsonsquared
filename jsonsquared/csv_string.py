@@ -138,7 +138,6 @@ def _expand_inner_json_string_extensions(s):
     4. backslash-escape unescaped double-quotes
     """
     out = []
-    last = 0
     m = None
     for m in re.finditer(LENIENT_JSON_STRING_NEXT_LENIENT_PART_RE, s):
         out.append(m.group('strict'))

@@ -153,7 +153,8 @@ JSON strings more convenient and less error-prone:
   for just for formatting in the spreadsheet may be backslash-escaped.
 
   Real carriage return characters (U+000D) will be removed. Next, real
-  newline characters (U+000A) preceded by a backslash will be removed.
+  newline characters (U+000A) preceded by a backslash will be removed
+  (as well as whitespace between the backslash and newline).
   Finally any remaining real newline characters will be
   replaced with the newline escape sequence (`\n`) before parsing.
 
