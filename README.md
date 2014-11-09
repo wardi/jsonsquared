@@ -244,7 +244,29 @@ a | b | c | d | e
 
 ## 2. Compound types
 
-### Horizontal lists
+### Nested objects
+
+JSON objects nested directly inside other objects are represented
+by extra columns with the parent name and child name joined with a
+period (`.`).
+
+id | name.en | name.fr
+--- | --- | ---
+190007 | Franklin | Benjamin
+
+```json
+[
+  {
+    "id": 190007,
+    "name": {
+      "en": "Franklin",
+      "fr": "Benjamin"
+    }
+  }
+]
+```
+
+### Simple horizontal lists
 
 Lists of simple types may be represented collapsed horizontally
 into a single cell by choosing a separating delimiter.
@@ -312,9 +334,9 @@ atsigns[ @] |
 ```
 
 
-### Vertical lists
+### Simple vertical lists
 
-Lists columns continue to neighboring rows if those rows do not contain
+Lists columns continue to following rows if those rows do not contain
 an element that forces the start of a new object. In this example
 only a value in the "name" column would start a new object.
 
@@ -343,8 +365,10 @@ Tim | 19 | green
  | 14, 18, | blue
 
 
-Empty lists in JSON Squared are written as a single delimiter with
-nothing in front.
+### Empty lists
+
+Empty lists in JSON Squared are written as a delimiter with
+nothing (or only whitespace) on either side.
 
 name | pets[,]
 --- | ---
@@ -360,30 +384,15 @@ May | ,
 ```
 
 
-### Nested objects
-
-JSON objects nested directly inside other objects are represented
-by extra columns with the parent name and child name joined with a
-period (`.`).
-
-id | name.en | name.fr
---- | --- | ---
-190007 | Franklin | Benjamin
-
-```json
-[
-  {
-    "id": 190007,
-    "name": {"en": "Franklin", "fr": "Benjamin"}
-  }
-]
-```
-
 ### Lists of objects
 
 Lists of JSON objects within other objects are represented
 by extra columns with the parent name and child name joined with a
 forward slash (`/`).
+
+List elements are added by including values on following rows.
+Values from columns with the same heading prefix on the same row
+are combined into single objects.
 
 address | residents/name | residents/age | cars/make | cars/color
 --- | --- | --- | --- | ---
