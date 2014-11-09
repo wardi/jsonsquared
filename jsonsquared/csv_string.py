@@ -15,11 +15,19 @@ from jsonsquared.errors import ParseFailure, JSONSquaredError
 ERROR_SNIPPET_LENGTH = 10
 
 CONTROL_CHARACTERS = ''.join(unichr(x) for x in range(32))
-JSON_STRING_RE = (
-    r'"(?:[^"\\' + CONTROL_CHARACTERS + r']|\\["\\/bfnrt]|\\u[0-9a-fA-F]{4}|'
-    r'(\\[^\S\n]*\n|\r|\n|")' # this part is a JSON squared extension
-    r')*"$')
-JSON_STRING_PARTIAL_RE = JSON_STRING_RE[:-2]
+JSON_STRING_PLAIN_RE = r'[^"\\' + CONTROL_CHARACTERS + r']'
+JSON_STRING_ESCAPES_RE = r'\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4})'
+LENIENT_PARTS_RE = r'(?:\\[^\S\n]*\n|\r|\n|")' # JSON squared extension
+LENIENT_JSON_STRING_RE = (
+    r'"(?:' + JSON_STRING_PLAIN_RE +
+    r'|' + JSON_STRING_ESCAPES_RE +
+    r'|' + LENIENT_PARTS_RE + r')*"$')
+LENIENT_JSON_STRING_NEXT_LENIENT_PART_RE = (
+    r'(?P<strict>(?:' + JSON_STRING_PLAIN_RE +
+    r'|' + JSON_STRING_ESCAPES_RE +
+    r')*)(?P<lenient>' + LENIENT_PARTS_RE + r')')
+LENIENT_JSON_STRING_PARTIAL_RE = LENIENT_JSON_STRING_RE.rstrip(r'"$')
+
 JSON_NUMBER_RE = r'-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?$'
 
 DOUBLE_QUOTES = '"\N{LEFT DOUBLE QUOTATION MARK}\N{RIGHT DOUBLE QUOTATION MARK}'
@@ -97,9 +105,8 @@ def decode(s, allow_nan=False):
 
     # straight quotes for JSON parsing
     s = '"' + inner + '"'
-    m = re.match(JSON_STRING_RE, s)
-    if m:
-        s = _expand_json_string_extensions(s, m)
+    if re.match(LENIENT_JSON_STRING_RE, s):
+        s = '"' + _expand_inner_json_string_extensions(inner) + '"'
         if str is bytes:
             # XXX: encoding because json in python <2.7.8 returns separate
             # surrogate pairs when passed a unicode object including
@@ -122,7 +129,7 @@ def decode(s, allow_nan=False):
             bad_index, bad_part))
 
 
-def _expand_json_string_extensions(s, m):
+def _expand_inner_json_string_extensions(s):
     """
     implementation of our json strings lenient extensions:
     1. remove backslash-prefixed real-newlines
@@ -130,24 +137,19 @@ def _expand_json_string_extensions(s, m):
     3. remove real carriage returns
     4. backslash-escape unescaped double-quotes
     """
-    if not m.lastindex:
-        return s
-    i = 1
-    last = 0
     out = []
-    # regex match objects are weird
-    while i <= m.lastindex:
-        start, end = m.span(i)
-        if start > last:
-            out.append(s[last:start])
-        group = m.group(i)
+    last = 0
+    m = None
+    for m in re.finditer(LENIENT_JSON_STRING_NEXT_LENIENT_PART_RE, s):
+        out.append(m.group('strict'))
+        group = m.group('lenient')
         if group == '\n':
             out.append(r'\n')
         elif group == '"':
             out.append(r'\"')
-        last = end
-        i += 1
-    out.append(s[last:])
+    if m is None:
+        return s
+    out.append(s[m.end():])
     return ''.join(out)
 
 
