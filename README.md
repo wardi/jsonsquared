@@ -244,20 +244,14 @@ a | b | c | d | e
 
 ## 2. Compound types
 
-### Lists of simple types
+### Horizontal lists
 
-Lists of simple types may be represented
-collapsed into a single cell by choosing a delimiter, or vertically
-in neighboring rows. For lists a `[𝑥]` suffix is added to
+Lists of simple types may be represented collapsed horizontally
+into a single cell by choosing a separating delimiter.
+For list columns a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter chosen.
 
-Delimiters must be at least one character but may be multiple characters
-long to avoid conflicting with values that may appear in list elements.
-All whitespace in delimiters is significant and must match exactly
-to separate each element.
-
-After separation
-each element is parsed as a [simple type](#1-simple-types) as though
+Each list element is parsed as a [simple type](#1-simple-types) as though
 it was in its own cell. The normal rules such as removing surrounding
 whitespace apply.
 
@@ -275,24 +269,6 @@ Tim | 19, 14, 18 | green blue
 ]
 ```
 
-Lists continue to neighboring rows if those row do not contain
-an element that forces the start of a new object. In this example
-a value in the "name" column would start a new object.
-
-A single trailing delimiter may be included in each cell and will
-be ignored. These examples are equivalent to the one above:
-
-name | rooms[,] | colors[ ]
---- | --- | ---
-Tim | 19, | green
- | 14 | blue
- | 18 |
-
-name | rooms[,] | colors[ ]
---- | --- | ---
-Tim | 19 | green
- | 14, 18, | blue
-
 JSON strings are supported within lists, but they may not contain
 the delimiter used by the list. Lists are split on their delimiter
 before string values are parsed.
@@ -309,6 +285,63 @@ Ryan | "hi, there", "friend"
   }
 ]
 ```
+
+Delimiters must be at least one character but may be multiple characters
+to avoid conflicting with list element values.
+Whitespace in delimiters is significant. The complete delimiter
+must must match exactly. Delimiters (including any whitespace) may not
+overlap.
+
+List elements with no text or elements containing only whitespace
+will be removed. For example a trailing delimiter will have no effect
+on the list content.
+
+The delimiter in this example is exactly one space followed by one at
+sign (` @`).
+
+atsigns[ @] |
+--- | ---
+@@ @ @ @ @@@ @ |
+
+```json
+[
+  {
+    "atsigns": ["@@", "@", "@@@"]
+  }
+]
+```
+
+
+### Vertical lists
+
+Lists columns continue to neighboring rows if those rows do not contain
+an element that forces the start of a new object. In this example
+only a value in the "name" column would start a new object.
+
+name | rooms[,] | colors[ ]
+--- | --- | ---
+Tim | 19 | green
+ | 14 | blue
+ | 18 |
+
+```json
+[
+  {
+    "name": "Tim",
+    "rooms": [19, 14, 18],
+    "colors": ["green", "blue"]
+  }
+]
+```
+
+Vertical and horizontal lists may be mixed freely. This is another way
+to write the example above.
+
+name | rooms[,] | colors[ ]
+--- | --- | ---
+Tim | 19 | green
+ | 14, 18, | blue
+
 
 Empty lists in JSON Squared are written as a single delimiter with
 nothing in front.
