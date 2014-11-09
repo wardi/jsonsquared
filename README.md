@@ -27,7 +27,7 @@ Limitations:
 * JSON objects in files produced will always have their keys in
   the same order, e.g. `[{"a": 1, "b": 2}, {"a": 2, "b": 1}, ...]`
 
-## Example
+## 0. Example
 
 address | owners[,] | pets/name | pets/joined | pets/toys[,]
 --- | --- | --- | --- | ---
@@ -68,7 +68,7 @@ Converts to:
 ```
 
 
-## Simple types
+## 1. Simple types
 
 ### Reserved values
 
@@ -222,7 +222,7 @@ a | b | c
 ### Normal strings
 
 Any value that is not [reserved](#reserved-values),
-a [number](#numbers) or [surrounded by double-quotes](#json-strings)
+[decimal](#numbers) or [surrounded by double-quotes](#json-strings)
 is treated as a normal string value. Leading and trailing
 whitespace is removed. There is no escaping required for any characters.
 
@@ -242,7 +242,7 @@ a | b | c | d | e
 ]
 ```
 
-## Compound types
+## 2. Compound types
 
 ### Lists of simple types
 
@@ -250,6 +250,15 @@ Lists of simple types may be represented
 collapsed into a single cell by choosing a delimiter, or vertically
 in neighboring rows. For lists a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter chosen.
+
+Delimiters may be multiple characters long to avoid conflicting with
+values that may appear. All whitespace in delimiters is significant
+and must match exactly to separate list elements.
+
+After separation
+each element is parsed as a [simple value](#1-simple-values) as though
+it was in its own cell, so normal rules such as removing surrounding
+whitespace apply.
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
@@ -381,7 +390,7 @@ nested | 1 | 2, 3 | 4
 ]
 ```
 
-Empty lists are used to break up nested lists without adding
+Empty lists are used to break up nested lists when not adding
 elements in between. Choose a delimiter more visible than a comma
 for lists containing only lists to help make nesting clearer.
 
@@ -419,7 +428,8 @@ This works for lists of lists at the top-level too.
 
 ### Explicit object boundaries
 
-When an object in a list contains no simple-typed values we may need to
+When an object in a list contains no [simple-typed](#1-simple-types)
+values we may need to
 mark where that object ends and where the next object in the same list
 begins. We use the same method as when we have nested lists: insert an
 empty list one level above.
@@ -458,7 +468,7 @@ first element isn't required but can look more consistent.
 ]
 ```
 
-## Edge cases
+## 3. Edge cases
 
 ### Top-level objects
 
