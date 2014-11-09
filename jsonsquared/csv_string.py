@@ -9,7 +9,7 @@ try:
 except ImportError:
     import json
 
-from jsonsquared.errors import ParseFailure
+from jsonsquared.errors import ParseFailure, JSONSquaredError
 
 
 ERROR_SNIPPET_LENGTH = 10
@@ -46,6 +46,7 @@ def decode(s, allow_nan=False):
     :raises: ParseError on invalid JSON string-formatted input,
         ValueError on empty/whitespace-only string passed
     """
+    original_s = s
     s = unicode(s).rstrip()
     first_len = len(s)
     s = s.lstrip()
@@ -103,8 +104,12 @@ def decode(s, allow_nan=False):
             # XXX: encoding because json in python <2.7.8 returns separate
             # surrogate pairs when passed a unicode object including
             # escaped surrogates
-            return json.loads(s.encode('utf-8'))
-        return json.loads(s)
+            s = s.encode('utf-8')
+        try:
+            return json.loads(s)
+        except json.JSONDecodeError:
+            raise JSONSquaredError(
+                'csv_string.decode generated invalid JSON', original_s, s)
 
     # build a human-friendly error message
     m = re.match(JSON_STRING_PARTIAL_RE, s)

@@ -109,3 +109,6 @@ class TestDecode(unittest.TestCase):
     def test_json_string_with_escaped_embedded_whitespace_newline(self):
         self.assertEquals(decode('"hello\\ \r\nworld"'), 'helloworld')
 
+    def test_json_string_with_escaped_embedded_whitespace_newlines(self):
+        self.assertEquals(decode('"hello\\ \r\n\nworld"'), 'hello\nworld')
+
