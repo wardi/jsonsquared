@@ -251,13 +251,14 @@ collapsed into a single cell by choosing a delimiter, or vertically
 in neighboring rows. For lists a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter chosen.
 
-Delimiters may be multiple characters long to avoid conflicting with
-values that may appear. All whitespace in delimiters is significant
-and must match exactly to separate list elements.
+Delimiters must be at least one character but may be multiple characters
+long to avoid conflicting with values that may appear in list elements.
+All whitespace in delimiters is significant and must match exactly
+to separate each element.
 
 After separation
-each element is parsed as a [simple value](#1-simple-values) as though
-it was in its own cell, so normal rules such as removing surrounding
+each element is parsed as a [simple type](#1-simple-types) as though
+it was in its own cell. The normal rules such as removing surrounding
 whitespace apply.
 
 name | rooms[,] | colors[ ]
