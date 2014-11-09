@@ -221,7 +221,9 @@ a | b | c
 
 ### Normal strings
 
-Any other value is treated as a normal string value. Leading and trailing
+Any value that is not [reserved](#reserved-values),
+a [number](#numbers) or [surrounded by double-quotes](#json-strings)
+is treated as a normal string value. Leading and trailing
 whitespace is removed. There is no escaping required for any characters.
 
 a | b | c | d | e
