@@ -266,14 +266,14 @@ id | name.en | name.fr
 ]
 ```
 
-### Simple horizontal lists
+### Horizontal lists
 
-Lists of simple types may be represented collapsed horizontally
-into a single cell by choosing a separating delimiter.
+Lists of [simple type](#1-simple-types) may be written horizontally
+in a single cell by using a separating delimiter.
 For list columns a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter chosen.
 
-Each list element is parsed as a [simple type](#1-simple-types) as though
+Each list element is parsed as a simple type as though
 it was in its own cell. The normal rules such as removing surrounding
 whitespace apply.
 
@@ -291,50 +291,29 @@ Tim | 19, 14, 18 | green blue
 ]
 ```
 
-JSON strings are supported within lists, but they may not contain
-the delimiter used by the list. Lists are split on their delimiter
-before string values are parsed.
+Delimiters must be at least one character but may be multiple characters
+to avoid conflicting with list element values.
+Whitespace in delimiters is significant.
+
+To include the delimiter text as a value in a list without replacing all
+other delimiters in the column use the complete delimiter twice.
 
 name | says[,]
 --- | ---
-Ryan | "hi, there", "friend"
+Ryan | hi,, there, friend
 
 ```json
 [
   {
     "name": "Ryan",
-    "says": ["\"hi", "there\"", "friend"]
-  }
-]
-```
-
-Delimiters must be at least one character but may be multiple characters
-to avoid conflicting with list element values.
-Whitespace in delimiters is significant. The complete delimiter
-must must match exactly. Delimiters (including any whitespace) may not
-overlap.
-
-List elements with no text or elements containing only whitespace
-will be removed. For example a trailing delimiter will have no effect
-on the list content.
-
-The delimiter in this example is exactly one space followed by one at
-sign (` @`).
-
-atsigns[ @] |
---- | ---
-@@ @ @ @ @@@ @ |
-
-```json
-[
-  {
-    "atsigns": ["@@", "@", "@@@"]
+    "says": ["hi, there", "friend"]
   }
 ]
 ```
 
 
-### Simple vertical lists
+
+### Vertical lists
 
 Lists columns continue to following rows if those rows do not contain
 an element that forces the start of a new object. In this example
