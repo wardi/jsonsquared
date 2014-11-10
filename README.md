@@ -7,9 +7,9 @@ JSON Squared is a tool being developed for lossless conversion between
 style convenient for editing.
 
 Many libraries exist for converting between JSON and CSV. This library
-makes the assumption that your JSON contains many objects with a
-similar structure. For each path (list of keys) to a list of objects it
-is assumed that the objects in the lists share a similar structure.
+assumes that the JSON file contains many objects with a
+similar structure and for each path (list of keys) it
+assumes that the objects in the list share a similar structure.
 
 Features:
 
@@ -455,10 +455,9 @@ This works for lists of lists at the top-level too.
 ### Explicit object boundaries
 
 When an object in a list contains no [simple-typed](#1-simple-types)
-values we may need to
-mark where that object ends and where the next object in the same list
-begins. We use the same method as when we have nested lists: insert an
-empty list one level above.
+values use the nested list method to
+mark where one object ends and where the next object in the same list
+begins: insert an empty list one level above.
 
 very[-] | very/listy[,]
 --- | ---
@@ -498,7 +497,7 @@ first element isn't required but can look more consistent.
 
 ### Top-level objects
 
-We use period (`.`) as a prefix in the column heading to indicate keys of a
+Use period (`.`) as a prefix in the column heading to indicate keys of a
 top-level object.
 
 .title | .things[,]
@@ -516,7 +515,7 @@ spelling | cat
 
 ### Top-level simple types
 
-For simple types we use a period as a column heading by itself.
+For simple types use a period as a column heading by itself.
 
 . |
 --- |
@@ -531,7 +530,7 @@ pretty boring JSON |
 
 Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
-opening brackets (`[`) can be given as JSON strings.
+opening brackets (`[`) may be written as [JSON strings](json-strings).
 
 odd."" | "\u005B,]" | "\u002F"/"\u002E\u002E"
 --- | --- | ---
@@ -549,9 +548,8 @@ odd."" | "\u005B,]" | "\u002F"/"\u002E\u002E"
 ]
 ```
 
-You must use the Unicode-escaped versions of characters with a
-special meaning in JSON Squared column names
-or your keys will be interpreted incorrectly. For reference:
+Use the Unicode-escaped versions of characters with a
+special meaning in JSON Squared column names. For reference:
 
 Original | JSON Escaped
 --- | ---
@@ -559,6 +557,8 @@ Original | JSON Escaped
 `"` | `\u0022`
 `/` | `\u002F`
 `[` | `\u005B`
+
+List delimiters may not be written as JSON strings.
 
 
 ### Mixed value types
@@ -583,8 +583,7 @@ id | foo | foo[,] | foo.bar | foo/baz
 ]
 ```
 
-Within a list we can switch between objects types on different rows while
-we build the list.
+Different objects types may appear in the same list.
 
 collection | things[,] | things/id | things/name
 --- | --- | --- | ---
