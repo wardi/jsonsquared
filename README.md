@@ -268,13 +268,13 @@ id | name.en | name.fr
 
 ### Horizontal lists
 
-Lists of [simple type](#1-simple-types) may be written horizontally
+Lists of [simple types](#1-simple-types) may be written horizontally
 in a single cell by using a separating delimiter.
 For list columns a `[𝑥]` suffix is added to
 the column heading, where `𝑥` is the delimiter chosen.
 
 Each list element is parsed as a simple type as though
-it was in its own cell. The normal rules such as removing surrounding
+it was in its own cell. Normal rules such as removing surrounding
 whitespace apply.
 
 name | rooms[,] | colors[ ]
@@ -293,10 +293,12 @@ Tim | 19, 14, 18 | green blue
 
 Delimiters must be at least one character but may be multiple characters
 to avoid conflicting with list element values.
-Whitespace in delimiters is significant.
+Whitespace in delimiters is significant. A closing brace (`]`) may not
+be used as any part of a delimiter.
 
-To include the delimiter text as a value in a list without replacing all
-other delimiters in the column use the complete delimiter twice.
+To include the delimiter text as a value in a list (without replacing all
+other delimiters in the column) use the complete delimiter twice with
+no whitespace in between.
 
 name | says[,]
 --- | ---
@@ -311,6 +313,8 @@ Ryan | hi,, there, friend
 ]
 ```
 
+Empty and whitespace-only elements in lists are ignored. For example a
+trailing delimiter in a list cell will have no effect on list contents.
 
 
 ### Vertical lists
@@ -335,13 +339,13 @@ Tim | 19 | green
 ]
 ```
 
-Vertical and horizontal lists may be mixed freely. This is another way
+Vertical and horizontal lists may be mixed in any order. This is another way
 to write the example above.
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
 Tim | 19 | green
- | 14, 18, | blue
+ | 14, 18 | blue
 
 
 ### Empty lists
