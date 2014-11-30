@@ -112,3 +112,26 @@ class TestDecode(unittest.TestCase):
     def test_json_string_with_escaped_embedded_whitespace_newlines(self):
         self.assertEquals(decode('"hello\\ \r\n\nworld"'), 'hello\nworld')
 
+
+class TestDecodeList(object):
+    def test_empty_list(self):
+        self.assertEquals(decode_list('x', 'x'), [])
+
+    def test_one_element(self):
+        self.assertEquals(decode_list('0', 'x'), [0])
+
+    def test_trailing_delimiter(self):
+        self.assertEquals(decode_list('0,', ','), [0])
+
+    def test_delimiter_prefix(self):
+        self.assertEquals(decode_list('xx2', 'x'), ['x2'])
+
+    def test_delimiter_suffix(self):
+        self.assertEquals(decode_list('2xx', 'x'), ['2x'])
+
+    def test_delimiter_ambiguous(self):
+        self.assertEquals(decode_list('2xxxxx3', 'x'), ['2xx', 3])
+
+    def test_delimiter_disambiguate(self):
+        self.assertEquals(decode_list('2xx x xx3', 'x'), ['2x', 'x3'])
+

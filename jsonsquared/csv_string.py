@@ -87,21 +87,21 @@ def decode(s, allow_nan=False):
         if e == 'NaN':
             if not allow_nan:
                 raise ParseFailure(
-                    'Strict JSON parsing does not allow NaN values')
+                    'Strict JSON parsing does not allow NaN values', 0, e)
             return Decimal('NaN')
         if e == 'Infinity':
             if not allow_nan:
                 raise ParseFailure(
-                    'Strict JSON parsing does not allow Infinity values')
+                    'Strict JSON parsing does not allow Infinity values', 0, e)
             return Decimal('Infinity')
         if e == '-Infinity':
             if not allow_nan:
                 raise ParseFailure(
-                    'Strict JSON parsing does not allow -Infinity values')
+                    'Strict JSON parsing does not allow -Infinity values', 0, e)
             return Decimal('-Infinity')
         raise ParseFailure(
-            'Extended JSON not recognised: {0}. Allowed values are '
-            '"NaN", "Infinity" and "-Infinity"'.format(json.dumps(e)))
+            'Extended JSON not recognised. Allowed values are '
+            '"NaN", "Infinity" and "-Infinity"', 0, inner)
 
     # straight quotes for JSON parsing
     s = '"' + inner + '"'
@@ -125,8 +125,7 @@ def decode(s, allow_nan=False):
     if len(bad_part) > ERROR_SNIPPET_LENGTH:
         bad_part = bad_part[:ERROR_SNIPPET_LENGTH] + '...'
     raise ParseFailure(
-        'JSON String parsing failed at position {0}: {1}'.format(
-            bad_index, bad_part))
+        'JSON String parsing failed', bad_index, bad_part)
 
 
 def _expand_inner_json_string_extensions(s):
@@ -155,7 +154,7 @@ def _expand_inner_json_string_extensions(s):
 
 def decode_list(s, list_delimiter, allow_nan=False):
     """
-    Return the python-equivalent list of objects for a JSON values
+    Return the python-equivalent list of objects for JSON values
     stored as a string in a CSV or spreadsheet.
 
     :param s: unicode CSV string
@@ -165,20 +164,51 @@ def decode_list(s, list_delimiter, allow_nan=False):
 
     :returns: list of 0+ JSON values
 
-    :raises: ParseError on invalid JSON string-formatted input
+    :raises: ParseFailure on invalid JSON string-formatted input
     """
     s = unicode(s)
 
-    if s.strip() == list_delimiter:
-        return []
-
     elements = s.split(list_delimiter)
-    if len(elements) > 1 and not has_value(elements[-1]):
-        del elements[-1]
 
+    preparse = []
     errors = []
     out = []
+
+    # emit doubled list_delimiters into list before parsing
+    q = iter(elements)
+    while True:
+        try:
+            e = next(q)
+        except StopIteration:
+            break
+        if e:
+            preparse.append(e)
+            continue
+        try:
+            e2 = next(q)
+        except StopIteration:
+            break
+        if preparse:
+            preparse[-1] = preparse[-1] + list_delimiter + e2
+        else:
+            preparse.append(list_delimiter + e2)
+
+    for e in preparse
+        # skip empty elements instead of raising errors
+        if not has_value(e):
+            continue
+        val = None
+        try:
+            val = decode(e)
+        except ParseFailure as e:
+            errors.append(e.args)
+
+
+
+
     for i, e in enumerate(elements):
+        if e != '' and out:
+            out[-1] = out[-1] + list_delimiter
         try:
             out.append(decode(e, allow_nan))
         except ParseError as err:
