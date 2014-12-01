@@ -29,15 +29,13 @@ Limitations:
 
 ## 0. Example
 
-address | owners[,] | pets/name | pets/joined | pets/toys[,]
+address | owners[] | pets/name | pets/joined | pets/toys[,]
 --- | --- | --- | --- | ---
 12 Oak ave. | Tim K. | Fluffy | 2009 | pink elephant, green ball
  | | Beast | 2011 |
  | | Tiny | 2005 | orange platypus
-199 Cliff ave. | June S. | Sophie | 2009 | knotted rope
- | James N. | | | octopus-like thing
- | | | | piranha squeak toy
- | | Theo | 2009 |
+199 Cliff ave. | June S. | Sophie | 2009 | rope, octopus, piranha
+ | James N. | Theo | 2009 |
 
 Converts to:
 
@@ -56,11 +54,7 @@ Converts to:
     "address": "199 Cliff ave.",
     "owners": ["June S.", "James N."],
     "pets": [
-      {
-        "name": "Sophie",
-        "joined": 2009,
-        "toys": ["knotted rope", "octopus-like thing", "piranha squeak toy"]
-      },
+      { "name": "Sophie", "joined": 2009, "toys": ["rope", "octopus", "piranha"] },
       { "name": "Theo", "joined": 2009 }
     ]
   }
@@ -75,9 +69,9 @@ Converts to:
 CSV allows only string values. JSON Squared maintains JSON types
 in CSV files by reserving the following string values:
 
-a | b | c | d
---- | --- | --- | ---
-null | true | false | {}
+a | b | c | d | e
+--- | --- | --- | --- | ---
+null | true | false | {} | []
 
 ```json
 [
@@ -85,7 +79,8 @@ null | true | false | {}
     "a": null,
     "b": true,
     "c": false,
-    "d": {}
+    "d": {},
+    "e": []
   }
 ]
 ```
@@ -96,8 +91,8 @@ they will be converted to their corresponding special
 JSON value.
 
 All letters must be lower-case. No
-characters are permitted between the braces for the
-empty object.
+characters are permitted between the braces or brackets
+for empty objects and lists.
 
 ### Numbers
 
@@ -323,7 +318,7 @@ Lists columns continue to following rows if those rows do not contain
 an element that forces the start of a new object. In this example
 only a value in the "name" column would start a new object.
 
-name | rooms[,] | colors[ ]
+name | rooms[] | colors[]
 --- | --- | ---
 Tim | 19 | green
  | 14 | blue
@@ -342,7 +337,7 @@ Tim | 19 | green
 Vertical and horizontal lists may be mixed in any order. This is another way
 to write the example above.
 
-name | rooms[,] | colors[ ]
+name | rooms[,] | colors[]
 --- | --- | ---
 Tim | 19 | green
  | 14, 18 | blue
@@ -350,19 +345,17 @@ Tim | 19 | green
 
 ### Empty lists
 
-Empty lists in JSON Squared are written as a delimiter with
-nothing (or only whitespace) on either side.
+Empty lists in JSON Squared are written as simple types.
 
-name | pets[,]
---- | ---
-May | ,
+name | pets | pets[]
+--- | --- | ---
+May | [] |
+Sam | | Rex
 
 ```json
 [
-  {
-    "name": "May",
-    "pets": []
-  }
+  { "name": "May", "pets": [] },
+  { "name": "Sam", "pets": ["Rex"] }
 ]
 ```
 
@@ -417,13 +410,12 @@ nested | 1 | 2, 3 | 4
 ```
 
 Empty lists are used to break up nested lists when not adding
-elements in between. Choose a delimiter more visible than a comma
-for lists containing only lists to help make nesting clearer.
+elements in between.
 
-name | data[>] | data/[>] | data//[,]
+name | data[] | data/[] | data//[,]
 --- | --- | --- | ---
-lumpy | > | > | 1, 2
- | | > | 3, 4
+lumpy | | | 1, 2
+ | | [] | 3, 4
 
 ```json
 [
@@ -436,12 +428,12 @@ lumpy | > | > | 1, 2
 
 This works for lists of lists at the top-level too.
 
-[>] | /[,]
+[] | /[,]
 --- | ---
-> | 1, 0, 0, 0
-> | 0, 1, 0, 0
-> | 0, 0, 1, -1
-> | 0, 0, 0, 1
+[] | 1, 0, 0, 0
+[] | 0, 1, 0, 0
+[] | 0, 0, 1, -1
+[] | 0, 0, 0, 1
 
 ```json
 [
@@ -459,12 +451,12 @@ values use the nested list method to
 mark where one object ends and where the next object in the same list
 begins: insert an empty list one level above.
 
-very[-] | very/listy[,]
+very/listy | very/listy[,]
 --- | ---
-  | do, re, mi
-  | fa
-- | so, la
-  | ti, do
+ | do, re, mi
+ | fa
+[] | so, la
+ | ti, do
 
 ```json
 [
@@ -480,10 +472,10 @@ very[-] | very/listy[,]
 This works with the top-level list too. Adding an empty list at the
 first element isn't required but can look more consistent.
 
-[>] | listy[,]
+listy | listy[,]
 --- | ---
-> | how, are, things
-> | fine
+[] | how, are, things
+[] | fine
   | thanks
 
 ```json
