@@ -114,7 +114,7 @@ a | b | c
 Cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif)
-[with some allowances](details.md#json-strings).
+([with some allowances](details.md#json-strings)).
 
 a | b | c | d
 --- | --- | --- | ---

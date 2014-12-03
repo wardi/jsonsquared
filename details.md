@@ -134,7 +134,7 @@ are combined into single objects.
 
 ### Empty lists
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Empty lists in JSON Squared are written as simple types.
 
@@ -153,7 +153,7 @@ Sam | | Rex
 
 ### Empty objects
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Empty objects that appear in lists with normal objects must be included
 as simple types.
@@ -180,7 +180,7 @@ messages[,] | messages/text
 
 ### Lists of lists
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Lists can be nested in column headings by replacing the list markers
 with forward slashes for all but the last level.
@@ -237,7 +237,7 @@ This works for lists of lists at the top-level too.
 
 ### Explicit object boundaries
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 When an object in a list contains no [simple-typed](#1-simple-types)
 values use the nested list method to
@@ -281,7 +281,7 @@ listy | listy[,]
 
 ### Top-level objects
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Use period (`.`) as a prefix in the column heading to indicate keys of a
 top-level object.
@@ -302,7 +302,7 @@ spelling | cat
 
 ### Top-level simple types
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 For simple types use a period as a column heading by itself.
 
@@ -317,7 +317,7 @@ pretty boring JSON |
 
 ### Unusual keys
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
@@ -354,7 +354,7 @@ List delimiters may not be written as JSON strings.
 
 ### Mixed value types
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Simple types, objects and other lists may all appear as values for the
 same keys in different objects by having the same column name specified
@@ -400,7 +400,7 @@ heap | 19 | C=64 |
 
 ### IEEE floats
 
-[readme](README.md#edge-cases)
+[readme](README.md#3-edge-cases)
 
 Enable the 'allow_nan' option in JSON Squared to include support for
 IEEE floating point special values.
