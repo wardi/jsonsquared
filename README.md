@@ -193,7 +193,7 @@ id | name.en | name.fr
 
 Create lists by adding brackets (`[]`) to a column heading.
 
-Lists contents continue to from one row to the next, as long as
+List contents continue to from one row to the next, as long as
 those rows aren't part of a new object. In this example
 only a value in the "name" column would start a new object:
 
@@ -219,8 +219,8 @@ Tim | 19 | green
 ### Horizontal lists
 
 Save space by combining short lists into fewer cells with horizontal
-lists.  Include a delimiter between the braces and that delimiter
-will be used to split cells into multiple list elements.
+lists.  Include a delimiter between the brackets in the heading and
+that delimiter will be used to split cells into multiple list elements.
 
 name | rooms[,] | colors[ ]
 --- | --- | ---
@@ -236,43 +236,16 @@ Tim | 19, 14, 18 | green blue
 ]
 ```
 
-Horizontal lists act as vertical lists as well.
-This is another way to write the example above.
-
-name | rooms[,] | colors[]
---- | --- | ---
-Tim | 19 | green
- | 14, 18 | blue
+Horizontal lists act as vertical lists as well, so you always have
+room to add more list elements.
 
 [details...](details.md#horizontal-lists)
 
 
-### Empty lists
-
-Empty lists in JSON Squared are written as simple types.
-
-name | pets | pets[]
---- | --- | ---
-May | [] |
-Sam | | Rex
-
-```json
-[
-  { "name": "May", "pets": [] },
-  { "name": "Sam", "pets": ["Rex"] }
-]
-```
-
-
 ### Lists of objects
 
-Lists of JSON objects within other objects are represented
-by extra columns with the parent name and child name joined with a
-forward slash (`/`).
-
-List elements are added by including values on following rows.
-Values from columns with the same heading prefix on the same row
-are combined into single objects.
+Join a parent name with a child name with a forward slash (`/`)
+in a column heading to create a list of objects.
 
 address | residents/name | residents/age | cars/make | cars/color
 --- | --- | --- | --- | ---
@@ -294,234 +267,18 @@ address | residents/name | residents/age | cars/make | cars/color
 ]
 ```
 
-### Lists of lists
+[details...](details.md#lists-of-objects)
 
-Lists can be nested in column headings by replacing the list markers
-with forward slashes for all but the last level.
-
-name | data[,] | data/[,] | data//[,]
---- | --- | --- | ---
-nested | 1 | 2, 3 | 4
- | 5 | 6, 7 |
-
-```json
-[
-  {
-    "name": "nested",
-    "data": [1, [2, 3, [4]], 5, [6, 7]]
-  }
-]
-```
-
-Empty lists are used to break up nested lists when not adding
-elements in between.
-
-name | data[] | data/[] | data//[,]
---- | --- | --- | ---
-lumpy | | | 1, 2
- | | [] | 3, 4
-
-```json
-[
-  {
-    "name": "lumpy",
-    "data": [[[1, 2], [3, 4]]]
-  }
-]
-```
-
-This works for lists of lists at the top-level too.
-
-[] | /[,]
---- | ---
-[] | 1, 0, 0, 0
-[] | 0, 1, 0, 0
-[] | 0, 0, 1, -1
-[] | 0, 0, 0, 1
-
-```json
-[
-  [1, 0, 0, 0],
-  [0, 1, 0, 0],
-  [0, 0, 1, -1],
-  [0, 0, 0, 1]
-]
-```
-
-### Explicit object boundaries
-
-When an object in a list contains no [simple-typed](#1-simple-types)
-values use the nested list method to
-mark where one object ends and where the next object in the same list
-begins: insert an empty list one level above.
-
-very/listy | very/listy[,]
---- | ---
- | do, re, mi
- | fa
-[] | so, la
- | ti, do
-
-```json
-[
-  {
-    "very":[
-      {"listy": ["do", "re", "mi", "fa"]},
-      {"listy": ["so", "la", "ti", "do"]}
-    ]
-  }
-]
-```
-
-This works with the top-level list too. Adding an empty list at the
-first element isn't required but can look more consistent.
-
-listy | listy[,]
---- | ---
-[] | how, are, things
-[] | fine
-  | thanks
-
-```json
-[
-  {"listy": ["how", "are", "things"]},
-  {"listy": ["fine", "thanks"]}
-]
-```
 
 ## 3. Edge cases
 
-### Top-level objects
+ * [Empty lists](details.md#empty-lists)
+ * [Empty objects](details.md#empty-objects)
+ * [Lists of lists](details.md#lists-of-lists)
+ * [Explicit object boundaries](details.md#explicit-object-boundaries)
+ * [Top-level objects](details.md#top-level-objects)
+ * [Top-level simple types](details.md#top-level-simple-types)
+ * [Unusual keys](details.md#unusual-keys)
+ * [Mixed value types](details.md#mixed-value-types)
+ * [IEEE floats](details.md#ieee-floats)
 
-Use period (`.`) as a prefix in the column heading to indicate keys of a
-top-level object.
-
-.title | .things[,]
---- | ---
-spelling | cat
- | dog
- | ball
-
-```json
-{
-  "title": "spelling",
-  "things": ["cat", "dog", "ball"]
-}
-```
-
-### Top-level simple types
-
-For simple types use a period as a column heading by itself.
-
-. |
---- |
-pretty boring JSON |
-
-```json
-"pretty boring JSON"
-```
-
-
-### Unusual keys
-
-Keys that are empty strings or strings containing periods (`.`),
-double quotes (`"`), forward slashes (`/`) or
-opening brackets (`[`) may be written as [JSON strings](json-strings).
-
-odd."" | "\u005B,]" | "\u002F"/"\u002E\u002E"
---- | --- | ---
-1 | 2 | 3
-
-```json
-[
-  {
-    "odd": {"": 1},
-    "[,]": 2,
-    "/": [
-      {"..": 3}
-    ]
-  }
-]
-```
-
-Use the Unicode-escaped versions of characters with a
-special meaning in JSON Squared column names. For reference:
-
-Original | JSON Escaped
---- | ---
-`.` | `\u002E`
-`"` | `\u0022`
-`/` | `\u002F`
-`[` | `\u005B`
-
-List delimiters may not be written as JSON strings.
-
-
-### Mixed value types
-
-Simple types, objects and other lists may all appear as values for the
-same keys in different objects by having the same column name specified
-different ways. Only one column may be given a value for each object.
-
-id | foo | foo[,] | foo.bar | foo/baz
---- | --- | --- | --- | ---
-1 | 42 | | |
-2 | | 7,6 | |
-3 | | | "carbon rod" |
-4 | | | | true
-
-```json
-[
-  {"id": 1, "foo": 42},
-  {"id": 2, "foo": [7, 6]},
-  {"id": 3, "foo": {"bar": "carbon rod"}},
-  {"id": 4, "foo": [{"baz": true}]}
-]
-```
-
-Different objects types may appear in the same list.
-
-collection | things[,] | things/id | things/name
---- | --- | --- | ---
-heap | 19 | C=64 |
- | | 1541 | disk drive
- | false | |
-
-```json
-[
-  {
-    "collection": "heap",
-    "things": [
-      19,
-      {"id": "C=64"},
-      {"id": 1541, "name": "disk drive"},
-      false
-    ]
-  }
-]
-```
-
-### Empty objects
-
-Empty objects that appear in lists with normal objects must be included
-as simple types.
-
-messages[,] | messages/text
---- | ---
- | hello
-{} | is there anyone there?
- | no, we're not here right now.
-
-```json
-[
-  {
-    "messages": [
-      {"text": "hello"},
-      {},
-      {"text": "is there anyone there?"},
-      {"text": "no we're not here right now"}
-    ]
-  }
-]
-
-```
