@@ -85,7 +85,7 @@ null | true | false | {} | []
 ]
 ```
 
-[details](details.md#reserved-values)
+[details...](details.md#reserved-values)
 
 ### Numbers
 
@@ -106,29 +106,15 @@ a | b | c
 ]
 ```
 
-[details](details.md#numbers)
+[details...](details.md#numbers)
 
 
 ### JSON strings
 
 Cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
-[parsed as JSON strings](docs/string.gif).
-
-JSON Squared makes a number of allowances so that working with
-JSON strings more convenient and less error-prone:
-
-* For Excel-smart-quote-friendliness the surrounding double-quotes
-  may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
-  and right quotes is not required.
-
-* Straight double-quotes (`"`) within the string body *do not* need to
-  be escaped with a backslash. This means means that backslash (`\`) is
-  the only character that needs escaping when converting a
-  [normal string](#normal-strings) to a JSON string.
-
-* Real newline characters may be included in the string body. Newlines
-  for just for formatting in the spreadsheet may be backslash-escaped.
+[parsed as JSON strings](docs/string.gif)
+[with some allowances](details.md#json-strings).
 
 a | b | c | d
 --- | --- | --- | ---
@@ -203,59 +189,13 @@ id | name.en | name.fr
 ]
 ```
 
-### Horizontal lists
-
-Lists of [simple types](#1-simple-types) may be written horizontally
-in a single cell by using a separating delimiter.
-For list columns a `[𝑥]` suffix is added to
-the column heading, where `𝑥` is the delimiter chosen.
-
-Each list element is parsed as a simple type as though
-it was in its own cell. Normal rules such as removing surrounding
-whitespace apply.
-
-name | rooms[,] | colors[ ]
---- | --- | ---
-Tim | 19, 14, 18 | green blue
-
-```json
-[
-  {
-    "name": "Tim",
-    "rooms": [19, 14, 18],
-    "colors": ["green", "blue"]
-  }
-]
-```
-
-Delimiters must be at least one character but may be multiple characters
-to avoid conflicting with list element values.
-Whitespace in delimiters is significant. A closing brace (`]`) may not
-be used as any part of a delimiter.
-
-To include the delimiter text as a value in a list (without replacing all
-other delimiters in the column) use the complete delimiter twice with
-no whitespace in between.
-
-name | says[,]
---- | ---
-Ryan | hi,, there, friend
-
-```json
-[
-  {
-    "name": "Ryan",
-    "says": ["hi, there", "friend"]
-  }
-]
-```
-
-
 ### Vertical lists
 
-Lists columns continue to following rows if those rows do not contain
-an element that forces the start of a new object. In this example
-only a value in the "name" column would start a new object.
+Create lists by adding brackets (`[]`) to a column heading.
+
+Lists contents continue to from one row to the next, as long as
+those rows aren't part of a new object. In this example
+only a value in the "name" column would start a new object:
 
 name | rooms[] | colors[]
 --- | --- | ---
@@ -273,13 +213,38 @@ Tim | 19 | green
 ]
 ```
 
-Vertical and horizontal lists may be mixed in any order. This is another way
-to write the example above.
+[details...](details.md#vertical-lists)
+
+
+### Horizontal lists
+
+Save space by combining short lists into fewer cells with horizontal
+lists.  Include a delimiter between the braces and that delimiter
+will be used to split cells into multiple list elements.
+
+name | rooms[,] | colors[ ]
+--- | --- | ---
+Tim | 19, 14, 18 | green blue
+
+```json
+[
+  {
+    "name": "Tim",
+    "rooms": [19, 14, 18],
+    "colors": ["green", "blue"]
+  }
+]
+```
+
+Horizontal lists act as vertical lists as well.
+This is another way to write the example above.
 
 name | rooms[,] | colors[]
 --- | --- | ---
 Tim | 19 | green
  | 14, 18 | blue
+
+[details...](details.md#horizontal-lists)
 
 
 ### Empty lists
