@@ -85,14 +85,7 @@ null | true | false | {} | []
 ]
 ```
 
-When these strings appear as the value
-of a CSV cell, ignoring whitespace on the left and right,
-they will be converted to their corresponding special
-JSON value.
-
-All letters must be lower-case. No
-characters are permitted between the braces or brackets
-for empty objects and lists.
+[details](details.md#reserved-values)
 
 ### Numbers
 
@@ -307,9 +300,6 @@ Ryan | hi,, there, friend
   }
 ]
 ```
-
-Empty and whitespace-only elements in lists are ignored. For example a
-trailing delimiter in a list cell will have no effect on list contents.
 
 
 ### Vertical lists
