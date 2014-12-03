@@ -2,13 +2,13 @@
 
 # [JSON]²
 
-## Gory details
+## The gory details
 
-Filling in the details not covered by the [readme](README.md)
+Filling in the bits of JSON Squared not covered by the [readme](README.md).
 
 ### Reserved values
 
-[readme](README.md#reserved-values)
+[back](README.md#reserved-values)
 
 When these strings appear as the value
 of a CSV cell, ignoring whitespace on the left and right,
@@ -22,7 +22,7 @@ for empty objects and lists.
 
 ### Numbers
 
-[readme](README.md#numbers)
+[back](README.md#numbers)
 
 Commas, whitespace and other separators are not permitted anywhere
 within these numbers, or the value will be treated as a
@@ -35,7 +35,7 @@ errors during conversions.
 
 ### JSON strings
 
-[readme](README.md#json-strings)
+[back](README.md#json-strings)
 
 * For Excel-smart-quote-friendliness the surrounding double-quotes
   may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
@@ -82,7 +82,7 @@ See also: [Extended JSON](#extended-json).
 
 ### Vertical lists
 
-[readme](README.md#vertical-lists)
+[back](README.md#vertical-lists)
 
 Lists continue on to rows without a value in any simple-typed sibling
 or parent column. A sibling or parent column shares the exact or a partial
@@ -92,7 +92,7 @@ See also: [Empty lists](#empty-lists).
 
 ### Horizontal lists
 
-[readme](README.md#horizontal-lists)
+[back](README.md#horizontal-lists)
 
 Each list element is parsed as a simple type as though
 it was in its own cell. Normal rules such as removing surrounding
@@ -122,7 +122,7 @@ Ryan | hi,, there, friend
 
 ### Lists of objects
 
-[readme](README.md#lists-of-objects)
+[back](README.md#lists-of-objects)
 
 List elements are added by including values on following rows.
 Values from sibling columns on the same row
@@ -134,7 +134,7 @@ are combined into single objects.
 
 ### Empty lists
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Empty lists in JSON Squared are written as simple types.
 
@@ -153,7 +153,7 @@ Sam | | Rex
 
 ### Empty objects
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Empty objects that appear in lists with normal objects must be included
 as simple types.
@@ -180,7 +180,7 @@ messages[,] | messages/text
 
 ### Lists of lists
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Lists can be nested in column headings by replacing the list markers
 with forward slashes for all but the last level.
@@ -237,7 +237,7 @@ This works for lists of lists at the top-level too.
 
 ### Explicit object boundaries
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 When an object in a list contains no [simple-typed](#1-simple-types)
 values use the nested list method to
@@ -281,7 +281,7 @@ listy | listy[,]
 
 ### Top-level objects
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Use period (`.`) as a prefix in the column heading to indicate keys of a
 top-level object.
@@ -302,7 +302,7 @@ spelling | cat
 
 ### Top-level simple types
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 For simple types use a period as a column heading by itself.
 
@@ -317,7 +317,7 @@ pretty boring JSON |
 
 ### Unusual keys
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
@@ -354,7 +354,7 @@ List delimiters may not be written as JSON strings.
 
 ### Mixed value types
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Simple types, objects and other lists may all appear as values for the
 same keys in different objects by having the same column name specified
@@ -400,7 +400,7 @@ heap | 19 | C=64 |
 
 ### IEEE floats
 
-[readme](README.md#3-edge-cases)
+[back](README.md#3-edge-cases)
 
 Enable the 'allow_nan' option in JSON Squared to include support for
 IEEE floating point special values.

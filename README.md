@@ -244,7 +244,7 @@ room to add more list elements.
 
 ### Lists of objects
 
-Join a parent name with a child name with a forward slash (`/`)
+Join a parent name and a child name with a forward slash (`/`)
 in a column heading to create a list of objects.
 
 address | residents/name | residents/age | cars/make | cars/color
