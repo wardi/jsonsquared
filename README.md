@@ -106,13 +106,8 @@ a | b | c
 ]
 ```
 
-Commas, whitespace and other separators are not permitted anywhere
-within these numbers, or the value will be treated as a
-[normal string](#normal-strings).
+[details](details.md#numbers)
 
-JSON Squared will maintain the precision of the numbers given
-and not introduce any underflow, overflow or rounding
-errors during conversions.
 
 ### JSON strings
 
@@ -127,26 +122,13 @@ JSON strings more convenient and less error-prone:
   may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
   and right quotes is not required.
 
-  The surrounding quotes will be converted to straight quotes before
-  parsing. Left and right quotes will not be replaced within the string
-  body.
-
 * Straight double-quotes (`"`) within the string body *do not* need to
   be escaped with a backslash. This means means that backslash (`\`) is
   the only character that needs escaping when converting a
   [normal string](#normal-strings) to a JSON string.
 
-  Straight double-quotes in the string body that are not already escaped
-  by a backslash will be escaped automatically before parsing.
-
 * Real newline characters may be included in the string body. Newlines
   for just for formatting in the spreadsheet may be backslash-escaped.
-
-  Real carriage return characters (U+000D) will be removed. Next, real
-  newline characters (U+000A) preceded by a backslash will be removed
-  (as well as whitespace between the backslash and newline).
-  Finally any remaining real newline characters will be
-  replaced with the newline escape sequence (`\n`) before parsing.
 
 a | b | c | d
 --- | --- | --- | ---
@@ -171,41 +153,8 @@ JSON strings are typically used for:
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
 
-JSON strings with invalid backslash escape sequences or control
-characters can cause parsing errors that will prevent a CSV document
-from being converted to JSON.
+[details...](details.md#json-strings)
 
-All errors are collected and reported with a clear reference to the
-position of the invalid characters:
-
-greeting |
---- |
-"just \saying hi" |
-
-```
-Error parsing cell A2: JSON String parsing failed at position 5: "\saying hi"
-```
-
-### Extended JSON
-
-JSON is occasionally extended to cover IEEE floating point special values.
-These special values are represented as JSON strings with a
-backslash-whitespace (`\ `) prefix. This prefix is otherwise an invalid
-part of a JSON string.
-
-a | b | c
---- | --- | ---
-"\ NaN" | "\ Infinity" | "\ -Infinity"
-
-```js
-[
-  {
-    "a": NaN,
-    "b": Infinity,
-    "c": -Infinity
-  }
-]
-```
 
 ### Normal strings
 
