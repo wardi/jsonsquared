@@ -114,7 +114,7 @@ a | b | c
 Cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
 [parsed as JSON strings](docs/string.gif)
-([with some allowances](details.md#json-strings)).
+, [with some allowances](details.md#quoted-strings).
 
 a | b | c | d
 --- | --- | --- | ---
@@ -145,7 +145,7 @@ Quoted strings are typically used for:
 ### Normal strings
 
 Any value that is not [reserved](#reserved-values),
-[decimal](#numbers) or [surrounded by double-quotes](#json-strings)
+[decimal](#numbers) or [surrounded by double-quotes](#quoted-strings)
 is treated as a normal string value. Leading and trailing
 whitespace is removed. There is no escaping required for any characters.
 
