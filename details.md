@@ -1,4 +1,4 @@
-<!-- vim: set et sw=2 sts=2 spell spelllang=en_us: -->
+<!-- vim: set et sw=2 sts=2 spell spelllang=en_us syntax=markdown: -->
 
 # [JSON]²
 
@@ -158,10 +158,11 @@ Sam | | Rex
 Empty objects that appear in lists with normal objects must be included
 as simple types.
 
-messages[,] | messages/text
+messages[] | messages/text
 --- | ---
  | hello
-{} | is there anyone there?
+{} |
+ | is there anyone there?
  | no, we're not here right now.
 
 ```json
@@ -323,7 +324,7 @@ Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
 opening brackets (`[`) may be written as [JSON strings](json-strings).
 
-odd."" | "\u005B,]" | "\u002F"/"\u002E\u002E"
+odd."" | "\u005B]" | "\u002F"/"\u002E\u002E"
 --- | --- | ---
 1 | 2 | 3
 
@@ -331,7 +332,7 @@ odd."" | "\u005B,]" | "\u002F"/"\u002E\u002E"
 [
   {
     "odd": {"": 1},
-    "[,]": 2,
+    "[]": 2,
     "/": [
       {"..": 3}
     ]
