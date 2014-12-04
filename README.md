@@ -109,7 +109,7 @@ a | b | c
 [details...](details.md#numbers)
 
 
-### JSON strings
+### Quoted strings
 
 Cell values that have double-quotes as their first and last characters,
 ignoring whitespace on the left and right, will be
@@ -131,7 +131,7 @@ a | b | c | d
 ]
 ```
 
-JSON strings are typically used for:
+Quoted strings are typically used for:
 
 * the empty string: `""`
 * strings with unprintable control codes, e.g.: `"\u0003\u0000"`
@@ -139,7 +139,7 @@ JSON strings are typically used for:
 * strings that would otherwise be interpreted as numbers or special
   values, e.g.: `"true"` or `"19.99"`
 
-[details...](details.md#json-strings)
+[details...](details.md#quoted-strings)
 
 
 ### Normal strings

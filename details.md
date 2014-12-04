@@ -33,9 +33,9 @@ and not introduce any underflow, overflow or rounding
 errors during conversions.
 
 
-### JSON strings
+### Quoted strings
 
-[back](README.md#json-strings)
+[back](README.md#quoted-strings)
 
 * For Excel-smart-quote-friendliness the surrounding double-quotes
   may be straight (`"`) left (`“`) or right (`”`) quotes. Matching left
@@ -46,12 +46,14 @@ errors during conversions.
   body.
 
 * Straight double-quotes (`"`) within the string body *do not* need to
-  be escaped with a backslash. This means means that backslash (`\`) is
+  be escaped with a backslash. This
+  means means that backslash (`\`) is
   the only character that needs escaping when converting a
-  [normal string](#normal-strings) to a JSON string.
+  [normal string](#normal-strings) to a quoted string.
 
   Straight double-quotes in the string body that are not already escaped
-  by a backslash will be escaped automatically before parsing.
+  by a backslash will be escaped automatically before being parsed
+  as a JSON string.
 
 * Real newline characters may be included in the string body. Newlines
   for just for formatting in the spreadsheet may be backslash-escaped.
@@ -60,11 +62,12 @@ errors during conversions.
   newline characters (U+000A) preceded by a backslash will be removed
   (as well as whitespace between the backslash and newline).
   Finally any remaining real newline characters will be
-  replaced with the newline escape sequence (`\n`) before parsing.
+  replaced with the newline escape sequence (`\n`) before being
+  parsed as a JSON string.
 
-JSON strings with invalid backslash escape sequences or control
-characters can cause parsing errors that will prevent a CSV document
-from being converted to JSON.
+Quoted strings with control characters or a backslash escape sequence
+invalid in a JSON string cause parsing errors that will prevent a
+CSV document from being converted to JSON.
 
 All errors are collected and reported with a clear reference to the
 position of the invalid characters:
@@ -74,7 +77,7 @@ greeting |
 "just \saying hi" |
 
 ```
-Error parsing cell A2: JSON String parsing failed at position 5: "\saying hi"
+Error parsing cell A2: Quoted String parsing failed at position 5: "\saying hi"
 ```
 
 See also: [Extended JSON](#extended-json).
@@ -322,7 +325,7 @@ pretty boring JSON |
 
 Keys that are empty strings or strings containing periods (`.`),
 double quotes (`"`), forward slashes (`/`) or
-opening brackets (`[`) may be written as [JSON strings](json-strings).
+opening brackets (`[`) may be written as [Quoted strings](quoted-strings).
 
 odd."" | "\u005B]" | "\u002F"/"\u002E\u002E"
 --- | --- | ---
@@ -350,7 +353,7 @@ Original | JSON Escaped
 `/` | `\u002F`
 `[` | `\u005B`
 
-List delimiters may not be written as JSON strings.
+List delimiters may not be written as Quoted strings.
 
 
 ### Mixed value types
@@ -406,7 +409,7 @@ heap | 19 | C=64 |
 Enable the 'allow_nan' option in JSON Squared to include support for
 IEEE floating point special values.
 
-These special values are represented as JSON strings with a
+These special values are represented as Quoted strings with a
 backslash-whitespace (`\ `) prefix. This prefix is otherwise an invalid
 part of a JSON string.
 
