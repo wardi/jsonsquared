@@ -70,46 +70,46 @@ class TestDecode(unittest.TestCase):
     def test_string_unicode(self):
         self.assertEquals(decode('\N{SNOWMAN}'), '\N{SNOWMAN}')
 
-    def test_json_string_unicode(self):
+    def test_quoted_string_unicode(self):
         self.assertEquals(decode('"\N{SNOWMAN}"'), '\N{SNOWMAN}')
 
-    def test_json_string_high_unicode(self):
+    def test_quoted_string_high_unicode(self):
         self.assertEquals(decode('"\U0001f4a9"'), '\U0001f4a9')
 
-    def test_json_string_escaped_surrogate_pairs(self):
+    def test_quoted_string_escaped_surrogate_pairs(self):
         self.assertEquals(decode(r'"\ud83d\udca9"'), '\U0001f4a9')
 
-    def test_json_string_significant_whitespace(self):
+    def test_quoted_string_significant_whitespace(self):
         self.assertEquals(decode('"  hello "'), '  hello ')
 
-    def test_json_string_right_quotes(self):
+    def test_quoted_string_right_quotes(self):
         self.assertEquals(decode('\N{RIGHT DOUBLE QUOTATION MARK} o "'), ' o ')
 
-    def test_json_string_left_quotes(self):
+    def test_quoted_string_left_quotes(self):
         self.assertEquals(decode('" y \N{LEFT DOUBLE QUOTATION MARK}'), ' y ')
 
-    def test_json_string_auto_escape_double_quotes(self):
+    def test_quoted_string_auto_escape_double_quotes(self):
         self.assertEquals(decode('"""'),'"')
 
-    def test_json_string_escaped_backslash(self):
+    def test_quoted_string_escaped_backslash(self):
         self.assertEquals(decode(r'"\\"'), '\\')
 
-    def test_json_string_allow_escaped_double_quotes(self):
+    def test_quoted_string_allow_escaped_double_quotes(self):
         self.assertEquals(decode(r'"\""'), '"')
 
-    def test_json_string_auto_escape_double_quotes_leading_backslash(self):
+    def test_quoted_string_auto_escape_double_quotes_leading_backslash(self):
         self.assertEquals(decode(r'"\\""'), r'\"')
 
-    def test_json_string_with_embedded_newline(self):
+    def test_quoted_string_with_embedded_newline(self):
         self.assertEquals(decode('"hello\nworld"'), 'hello\nworld')
 
-    def test_json_string_with_escaped_embedded_newline(self):
+    def test_quoted_string_with_escaped_embedded_newline(self):
         self.assertEquals(decode('"hello\\\nworld"'), 'helloworld')
 
-    def test_json_string_with_escaped_embedded_whitespace_newline(self):
+    def test_quoted_string_with_escaped_embedded_whitespace_newline(self):
         self.assertEquals(decode('"hello\\ \r\nworld"'), 'helloworld')
 
-    def test_json_string_with_escaped_embedded_whitespace_newlines(self):
+    def test_quoted_string_with_escaped_embedded_whitespace_newlines(self):
         self.assertEquals(decode('"hello\\ \r\n\nworld"'), 'hello\nworld')
 
 
