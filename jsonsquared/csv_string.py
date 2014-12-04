@@ -17,16 +17,16 @@ ERROR_SNIPPET_LENGTH = 10
 CONTROL_CHARACTERS = ''.join(unichr(x) for x in range(32))
 JSON_STRING_PLAIN_RE = r'[^"\\' + CONTROL_CHARACTERS + r']'
 JSON_STRING_ESCAPES_RE = r'\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4})'
-LENIENT_PARTS_RE = r'(?:\\[^\S\n]*\n|\r|\n|")' # JSON squared extension
-LENIENT_JSON_STRING_RE = (
+LENIENT_PARTS_RE = r'(?:\\[^\S\n]*\n|\r|\n|")' # Quoted string extension
+QUOTED_STRING_RE = (
     r'"(?:' + JSON_STRING_PLAIN_RE +
     r'|' + JSON_STRING_ESCAPES_RE +
     r'|' + LENIENT_PARTS_RE + r')*"$')
-LENIENT_JSON_STRING_NEXT_LENIENT_PART_RE = (
+QUOTED_STRING_NEXT_LENIENT_PART_RE = (
     r'(?P<strict>(?:' + JSON_STRING_PLAIN_RE +
     r'|' + JSON_STRING_ESCAPES_RE +
     r')*)(?P<lenient>' + LENIENT_PARTS_RE + r')')
-LENIENT_JSON_STRING_PARTIAL_RE = LENIENT_JSON_STRING_RE.rstrip(r'"$')
+QUOTED_STRING_PARTIAL_RE = QUOTED_STRING_RE.rstrip(r'"$')
 
 JSON_NUMBER_RE = r'-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?$'
 
@@ -51,7 +51,7 @@ def decode(s, allow_nan=False):
         or {}; when allow_nan is True Decimal values may include values
         'Infinity', '-Infinity' and 'NaN'.
 
-    :raises: ParseError on invalid JSON string-formatted input,
+    :raises: ParseError on invalid Quoted string-formatted input,
         ValueError on empty/whitespace-only string passed
     """
     original_s = s
@@ -82,7 +82,7 @@ def decode(s, allow_nan=False):
 
     inner = s[1:-1]
     if inner[:2].rstrip() == '\\':
-        # Extended JSON
+        # IEEE floats
         e = inner[2:].strip()
         if e == 'NaN':
             if not allow_nan:
@@ -100,13 +100,13 @@ def decode(s, allow_nan=False):
                     'Strict JSON parsing does not allow -Infinity values', 0, e)
             return Decimal('-Infinity')
         raise ParseFailure(
-            'Extended JSON not recognised. Allowed values are '
+            'IEEE float not recognised. Allowed values are '
             '"NaN", "Infinity" and "-Infinity"', 0, inner)
 
     # straight quotes for JSON parsing
     s = '"' + inner + '"'
-    if re.match(LENIENT_JSON_STRING_RE, s):
-        s = '"' + _expand_inner_json_string_extensions(inner) + '"'
+    if re.match(QUOTED_STRING_RE, s):
+        s = '"' + _expand_inner_quoted_string_extensions(inner) + '"'
         if str is bytes:
             # XXX: encoding because json in python <2.7.8 returns separate
             # surrogate pairs when passed a unicode object including
@@ -119,16 +119,16 @@ def decode(s, allow_nan=False):
                 'csv_string.decode generated invalid JSON', original_s, s)
 
     # build a human-friendly error message
-    m = re.match(JSON_STRING_PARTIAL_RE, s)
+    m = re.match(QUOTED_STRING_PARTIAL_RE, s)
     bad_index = m.end() + left_stripped
     bad_part = s[:-1][bad_index:bad_index + ERROR_SNIPPET_LENGTH + 1]
     if len(bad_part) > ERROR_SNIPPET_LENGTH:
         bad_part = bad_part[:ERROR_SNIPPET_LENGTH] + '...'
     raise ParseFailure(
-        'JSON String parsing failed', bad_index, bad_part)
+        'Quoted string parsing failed', bad_index, bad_part)
 
 
-def _expand_inner_json_string_extensions(s):
+def _expand_inner_quoted_string_extensions(s):
     """
     implementation of our json strings lenient extensions:
     1. remove backslash-prefixed real-newlines
@@ -138,7 +138,7 @@ def _expand_inner_json_string_extensions(s):
     """
     out = []
     m = None
-    for m in re.finditer(LENIENT_JSON_STRING_NEXT_LENIENT_PART_RE, s):
+    for m in re.finditer(QUOTED_STRING_NEXT_LENIENT_PART_RE, s):
         out.append(m.group('strict'))
         group = m.group('lenient')
         if group == '\n':
@@ -193,7 +193,7 @@ def decode_list(s, list_delimiter, allow_nan=False):
         else:
             preparse.append(list_delimiter + e2)
 
-    for e in preparse
+    for e in preparse:
         # skip empty elements instead of raising errors
         if not has_value(e):
             continue
