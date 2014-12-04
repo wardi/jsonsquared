@@ -118,13 +118,13 @@ ignoring whitespace on the left and right, will be
 
 a | b | c | d
 --- | --- | --- | ---
-"   what's that?" | “she said "hi".“ | "two<br/>lines" | "one \ <br/>line"
+"   what's that?" | “I \u2665 data“ | "two<br/>lines" | "one \ <br/>line"
 
 ```json
 [
   {
     "a": "   what's that?",
-    "b": "she said \"hi\".",
+    "b": "I ♥ data",
     "c": "two\nlines",
     "d": "one line"
   }
