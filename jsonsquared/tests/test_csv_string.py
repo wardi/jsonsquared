@@ -36,6 +36,12 @@ class TestDecode(unittest.TestCase):
     def test_empty_object(self):
         self.assertEquals(decode(' {} '), {})
 
+    def test_empty_list(self):
+        self.assertEquals(decode(' []\n'), [])
+
+    def test_empty_list_cant_have_space_inside(self):
+        self.assertEquals(decode(' [ ]', '[ ]'))
+
     def test_null_is_case_sensitive(self):
         self.assertEquals(decode('Null'), 'Null')
 
