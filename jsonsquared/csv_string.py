@@ -85,25 +85,20 @@ def decode(s, allow_nan=False):
     inner = s[1:-1]
     if inner[:2].rstrip() == '\\':
         # IEEE floats
+        allowed = ('NaN', 'Infinity', '-Infinity')
         e = inner[2:].strip()
-        if e == 'NaN':
-            if not allow_nan:
-                raise ParseFailure(
-                    'Strict JSON parsing does not allow NaN values', 0, e)
-            return Decimal('NaN')
-        if e == 'Infinity':
-            if not allow_nan:
-                raise ParseFailure(
-                    'Strict JSON parsing does not allow Infinity values', 0, e)
-            return Decimal('Infinity')
-        if e == '-Infinity':
-            if not allow_nan:
-                raise ParseFailure(
-                    'Strict JSON parsing does not allow -Infinity values', 0, e)
-            return Decimal('-Infinity')
-        raise ParseFailure(
-            'IEEE float not recognised. Allowed values are '
-            '"NaN", "Infinity" and "-Infinity"', 0, inner)
+        if e not in allowed:
+            raise ParseFailure(
+                'IEEE float not recognised. Allowed values are '
+                '{0}, {1} and {2}'.format(allowed),
+                offset=left_stripped + 2,
+                text=e)
+        if not allow_nan:
+            raise ParseFailure(
+                'Strict JSON parsing does not allow IEEE floats',
+                offset=left_stripped + 2,
+                text=e)
+        return Decimal(e)
 
     # straight quotes for JSON parsing
     s = '"' + inner + '"'
@@ -127,7 +122,9 @@ def decode(s, allow_nan=False):
     if len(bad_part) > ERROR_SNIPPET_LENGTH:
         bad_part = bad_part[:ERROR_SNIPPET_LENGTH] + '...'
     raise ParseFailure(
-        'Quoted string parsing failed', bad_index, bad_part)
+        'Quoted string parsing failed',
+        offset=bad_index,
+        text=bad_part)
 
 
 def _expand_inner_quoted_string_extensions(s):
@@ -173,8 +170,9 @@ def decode_list(s, list_delimiter, allow_nan=False):
     elements = s.split(list_delimiter)
 
     preparse = []
-    errors = []
     out = []
+    offsets = []
+    offset = 0
 
     # emit doubled list_delimiters into list before parsing
     q = iter(elements)
@@ -185,6 +183,8 @@ def decode_list(s, list_delimiter, allow_nan=False):
             break
         if e:
             preparse.append(e)
+            offsets.append(offset)
+            offset += len(e)
             continue
         try:
             e2 = next(q)
@@ -194,27 +194,15 @@ def decode_list(s, list_delimiter, allow_nan=False):
             preparse[-1] = preparse[-1] + list_delimiter + e2
         else:
             preparse.append(list_delimiter + e2)
+            offsets.append(offset)
+        offset += len(list_delimiter) + len(e2)
 
-    for e in preparse:
-        # skip empty elements instead of raising errors
+    for offset, e in zip(offsets, preparse):
         if not has_value(e):
-            continue
-        val = None
+            raise ParseFailure('Missing list value', offset)
         try:
-            val = decode(e)
+            out.append(decode(e))
         except ParseFailure as e:
-            errors.append(e.args)
+            raise ParseFailure(e.message, e.offset + offsets, text=e.text)
 
-
-
-
-    for i, e in enumerate(elements):
-        if e != '' and out:
-            out[-1] = out[-1] + list_delimiter
-        try:
-            out.append(decode(e, allow_nan))
-        except ParseError as err:
-            errors.append((i, err))
-
-    if errors:
-        pass
+    return out
