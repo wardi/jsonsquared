@@ -71,6 +71,8 @@ def decode(s, allow_nan=False):
         return False
     if s == '{}':
         return {}
+    if s == '[]':
+        return []
 
     if re.match(JSON_NUMBER_RE, s):
         # keep all the digits
@@ -162,7 +164,7 @@ def decode_list(s, list_delimiter, allow_nan=False):
         values stored as a list within this column
     :param allow_nan: True to allow IEEE float +/-inf and NaN
 
-    :returns: list of 0+ JSON values
+    :returns: list of 1 or more JSON values
 
     :raises: ParseFailure on invalid JSON string-formatted input
     """
